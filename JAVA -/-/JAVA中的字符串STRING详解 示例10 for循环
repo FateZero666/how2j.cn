@@ -1,0 +1,52 @@
+package com.company;
+
+import java.util.Scanner;
+
+public class Main {
+    public String getRandomString(int length) {
+        int a = 0;
+        char[] ans = new char[length];
+        for(int i = 0; i < length; ++i) {
+            do {
+                a = 48 + (int)(Math.random() * 75);
+            } while (a > 57 && a < 65 || a > 90 && a < 97);
+
+            ans[i] = (char) a;
+        }
+        return new String(ans);
+    }
+
+    public static void main(String[] args) {
+        Main a = new Main();
+        String password = a.getRandomString(3);
+
+        char[] ans = new char[3];
+        System.out.println("Random password: " + password);
+        for(int i = 48; i < 122; ++i) {
+            if(i > 57 && i < 65 || i > 90 && i < 97) {
+                continue;
+            } else {
+                for(int j = 48; j < 122; ++j) {
+                    if(j > 57 && j < 65 || j > 90 && j < 97) {
+                        continue;
+                    } else {
+                        for(int k = 48; k < 122; ++k) {
+                            if(k > 57 && k < 65 || k > 90 && k < 97) {
+                                continue;
+                            } else {
+                                   ans[0] = (char) i;
+                                   ans[1] = (char) j;
+                                   ans[2] = (char) k;
+                                   String temp = new String(ans);
+                                   if(temp.equals(password)) {
+                                       System.out.println("Robust way: " + temp);
+                                   }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+}
