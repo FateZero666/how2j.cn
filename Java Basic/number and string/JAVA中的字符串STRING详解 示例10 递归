@@ -1,0 +1,43 @@
+package com.company;
+
+import java.util.Scanner;
+
+public class Main {
+    public String getRandomString(int length) {
+        int a = 0;
+        char[] ans = new char[length];
+        for(int i = 0; i < length; ++i) {
+            do {
+                a = 48 + (int)(Math.random() * 75);
+            } while (a > 57 && a < 65 || a > 90 && a < 97);
+
+            ans[i] = (char) a;
+        }
+        return new String(ans);
+    }
+
+    public char findchar(char ans, int now) {
+           Main a = new Main();
+           char result;
+           if(ans != (char)now) {
+              result = a.findchar(ans, now + 1);
+           } else {
+               return (char)now;
+           }
+           return result;
+
+    }
+
+    public static void main(String[] args) {
+        Main a = new Main();
+        String password = a.getRandomString(3);
+
+        char[] ans = new char[3];
+        System.out.println("Random password: " + password);
+        char[] temp = password.toCharArray();
+        for(int i = 0; i < 3; ++i) {
+            ans[i] = a.findchar(temp[i], 48);
+        }
+        System.out.println(ans);
+    }
+}
