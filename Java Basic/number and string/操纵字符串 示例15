@@ -1,0 +1,18 @@
+package com.company;
+
+import java.util.Scanner;
+
+public class Main {
+
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+        String sentence = scan.nextLine();
+        char[] charSentence = sentence.toCharArray();
+        int i = charSentence.length - 1;
+        charSentence[i] = (char) ((int) charSentence[i] -32);
+
+        String ansSentence = String.valueOf(charSentence);
+
+        System.out.println(ansSentence);
+    }
+}
