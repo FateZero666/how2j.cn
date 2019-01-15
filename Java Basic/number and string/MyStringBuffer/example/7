@@ -1,0 +1,138 @@
+package com.company;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
+import java.util.Date;
+
+interface IStringBuffer {
+    public void append(String str); //追加字符串
+    public void append(char c);  //追加字符
+    public void insert(int pos,char b); //指定位置插入字符
+    public void insert(int pos,String b); //指定位置插入字符串
+    public void delete(int start); //从开始位置删除剩下的
+    public void delete(int start,int end); //从开始位置删除结束位置-1
+    public void reverse(); //反转
+    public int length(); //返回长度
+}
+
+class MyStringBuffer implements IStringBuffer {
+    char[] value;
+    int length = 0;
+    int capacity = 16;
+
+    public MyStringBuffer() {
+        value = new char[capacity];
+    }
+    public MyStringBuffer(String str) {
+        this.length = str.length();
+        capacity = (str.length()) * 2 + 1;
+        this.value = str.toCharArray();
+    }
+
+    @Override
+    public void append(char c) {
+        this.insert(this.length, c);
+    }
+    @Override
+    public void append(String str) {
+        this.insert(this.length, str);
+    }
+
+    @Override
+    public void insert(int pos, char b) {
+        this.insert(pos, String.valueOf(b));
+    }
+    @Override
+    public void insert(int pos, String b) {
+        if(pos < 0) return;
+        if(pos > this.length) return;
+        if(null == b) return;
+
+        int blength = b.length();
+        if(blength + this.length > this.capacity) {
+            this.capacity = (int) ((this.length + blength) * 1.5f);
+            char[] newValue = new char[this.capacity];
+            System.arraycopy(this.value, 0, newValue, 0, this.length);
+            this.value = newValue;
+        }
+        char[] temp = b.toCharArray();
+        System.arraycopy(this.value, pos, this.value, pos + temp.length, this.length - pos);
+        System.arraycopy(temp, 0, this.value, pos, temp.length);
+        this.length = this.length + temp.length;
+    }
+
+    public void delete(int start) {
+        this.delete(start, this.length);
+    }
+    public void delete(int start, int end) {
+        if(start < 0 || start > this.length || end < 0 || end > this.length || end < start) return;
+        for(int i = start, j = end; j < this.length; ++i, ++j) {
+            this.value[i] = this.value[j];
+        }
+        this.length -= (end - start);
+    }
+
+    public void reverse() {
+        for(int i = 0; i < this.length / 2 + 1; ++i) {
+            char temp = this.value[i];
+            this.value[i] = this.value[this.length - 1 - i];
+            this.value[this.length - 1 - i] = temp;
+        }
+    }
+
+    public int length() {
+        return this.length;
+    }
+
+    public int capacity() {
+        return this.capacity;
+    }
+
+    public String toString() {
+        char[] temp = new char[this.length];
+        for(int i = 0; i < this.length; ++i) {
+            temp[i] = this.value[i];
+        }
+        return String.valueOf(temp);
+    }
+}
+
+public class Main {
+
+    public String randomString(int length) {
+        char[] temp = new char[length];
+        for(int i = 0; i < length; ++i) {
+            int seed = 0;
+            do{
+                seed = 48 + (int)Math.round(Math.random() * 74f);
+            }while(seed > 57 && seed < 65 || seed > 90 && seed < 97);
+            temp[i] = (char)seed;
+        }
+        return String.valueOf(temp);
+    }
+
+    public static void main(String[] args) {
+        StringBuffer[] s1 = new StringBuffer[1000000];
+        MyStringBuffer[] s2 = new MyStringBuffer[1000000];
+        Main a = new Main();
+        for(int i = 0; i < 1000000; ++i) {
+            String temp = a.randomString(10);
+            s1[i] = new StringBuffer(temp);
+            s2[i] = new MyStringBuffer(temp);
+        }
+        StringBuffer a1 = new StringBuffer("");
+        long begin = System.currentTimeMillis();
+        for(int i = 0; i < 1000000; ++i) {
+            a1.append(s1[i]);
+        }
+        System.out.println("StringBuffer use time:" + -(begin - System.currentTimeMillis()));
+
+        MyStringBuffer a2 = new MyStringBuffer("");
+        begin = System.currentTimeMillis();
+        for(int i = 0; i < 1000000; ++i) {
+            a2.append(s2[i].toString());
+        }
+        System.out.println("MyStringBuffer use time:" + -(begin - System.currentTimeMillis()));
+    }
+}
