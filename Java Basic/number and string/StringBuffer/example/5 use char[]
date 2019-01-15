@@ -1,0 +1,147 @@
+package com.company;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
+import java.util.Date;
+
+interface IStringBuffer {
+    public void append(String str); //追加字符串
+    public void append(char c);  //追加字符
+    public void insert(int pos,char b); //指定位置插入字符
+    public void insert(int pos,String b); //指定位置插入字符串
+    public void delete(int start); //从开始位置删除剩下的
+    public void delete(int start,int end); //从开始位置删除结束位置-1
+    public void reverse(); //反转
+    public int length(); //返回长度
+}
+
+class MyStringBuffer implements IStringBuffer {
+    private char[] c;
+
+    public MyStringBuffer() {
+        this.c = new char[20];
+    }
+    public MyStringBuffer(int length) {
+        this.c = new char[length];
+    }
+    public MyStringBuffer(String str) {
+        this();
+        this.c = new char[this.c.length + str.length()];
+        for(int i = 0; i < str.length(); ++i) {
+            this.c[i] = str.charAt(i);
+        }
+    }
+    @Override
+    public void append(String str) {
+        int alength = str.length();
+        char[] temp = str.toCharArray();
+        for(int i = 0; i < alength; ++i) {
+           this.append(temp[i]);
+        }
+    }
+    @Override
+    public void append(char c) {
+        int length = this.length();
+        if(this.c.length < length + 3) {
+            char[] temp = new char[(this.c.length + 1) * 2];
+            for(int i = 0; i < length; ++i) {
+                temp[i] = this.c[i];
+            }
+            temp[length] = c;
+            this.c = temp;
+        } else {
+            this.c[length] = c;
+        }
+        this.c[length + 1] = '\0';
+    }
+    @Override
+    public void insert(int pos, String b) {
+        char[] temp = b.toCharArray();
+        for(int i = 0; i < temp.length; ++i) {
+            this.insert(pos + i, temp[i]);
+        }
+    }
+    @Override
+    public void insert(int pos, char b) {
+        char[] t1 = new char[pos];
+        char[] t2 = new char[this.length() - pos];
+        for(int i = 0; i < pos; ++i) {
+            t1[i] = this.c[i];
+        }
+        for(int i = 0; i < this.length() - pos; ++i) {
+            t2[i] = this.c[i + pos];
+        }
+        this.c = t1;
+        this.append(b);
+        for(int i = 0; i < t2.length; ++i) {
+            this.append(t2[i]);
+        }
+    }
+
+    public void delete(int start) {
+        this.c[start] = '\0';
+    }
+    public void delete(int start, int end) {
+        for(int i = start, j = end; j <= this.length(); ++i, ++j) {
+            this.c[i] = this.c[j];
+        }
+    }
+
+    public void reverse() {
+        for(int i = 0, j = this.length() - 1; i < j; ++i, --j) {
+            char temp = this.c[i];
+            this.c[i] = this.c[j];
+            this.c[j] = temp;
+        }
+    }
+
+    public int length() {
+       int i;
+        for(i = 0; i < this.c.length; ++i) {
+          if(this.c[i] == '\0') {
+             break;
+          }
+      }
+      return i;
+    }
+
+    public int capacity() {
+        return this.c.length;
+    }
+
+    public String toString() {
+        char[] temp = new char[this.length()];
+        for(int i = 0; i < this.length(); ++i) {
+            temp[i] = this.c[i];
+        }
+        return new String(temp);
+    }
+}
+
+public class Main {
+
+
+    public static void main(String[] args) {
+
+        String str1 = "let there ";
+
+        MyStringBuffer sb = new MyStringBuffer(str1); //根据str1创建一个StringBuffer对象
+        sb.append("be light"); //在最后追加
+
+        System.out.println(sb);
+
+        sb.delete(4, 10);//删除4-10之间的字符
+
+        System.out.println(sb);
+
+        sb.insert(4, "there ");//在4这个位置插入 there
+
+        System.out.println(sb);
+
+        sb.reverse(); //反转
+
+        System.out.println(sb);
+
+    }
+}
