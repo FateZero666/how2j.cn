@@ -1,0 +1,56 @@
+package com.company;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
+import java.util.Date;
+
+public class Main {
+
+//    public String revers(String sentence) {
+//        char[] charSentence = sentence.toCharArray();
+//        int sLength = charSentence.length;
+//        char[] tempSentence = new char[sLength];
+//        for(int i = 0; i < sLength; ++i) {
+//            tempSentence[sLength - 1 - i] = charSentence[i];
+//        }
+//        return String.valueOf(tempSentence);
+//    }
+
+    public String randomString(int length) {
+        char[] c = new char[length];
+        for(int i = 0; i < length; ++i) {
+            int seed = 0;
+            do{
+                seed = 48 + (int)Math.round((Math.random() * 74));
+            } while(seed >57 && seed < 65 || seed > 90 && seed < 97);
+            c[i] = (char) seed;
+        }
+        return String.valueOf(c);
+    }
+
+    public static void main(String[] args) {
+        Main a = new Main();
+        String[] s = new String[10000];
+        StringBuffer[] sb = new StringBuffer[10000];
+        for(int i = 0; i < 10000; ++i) {
+            s[i] = a.randomString(10);
+            sb[i] = new StringBuffer(s[i]);
+        }
+
+        String sentence = new String();
+        long begin = System.currentTimeMillis();
+        for(int i = 0; i < 10000; ++i) {
+            sentence += s[i];
+        }
+        System.out.println("String link take time：" + (System.currentTimeMillis() -begin));
+
+        StringBuffer s2 = new StringBuffer();
+        begin = System.currentTimeMillis();
+        for(int i = 0; i < 10000; ++i) {
+            s2.append(s[i]);
+        }
+        System.out.println("StringBuffer take time：" + (System.currentTimeMillis() - begin));
+
+    }
+}
