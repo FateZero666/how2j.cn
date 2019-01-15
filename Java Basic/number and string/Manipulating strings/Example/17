@@ -1,0 +1,26 @@
+package com.company;
+
+import java.util.Scanner;
+
+public class Main {
+
+    public String revers(String sentence) {
+        char[] charSentence = sentence.toCharArray();
+        int sLength = charSentence.length;
+        char[] tempSentence = new char[sLength];
+        for(int i = 0; i < sLength; ++i) {
+            tempSentence[sLength - 1 - i] = charSentence[i];
+        }
+        return String.valueOf(tempSentence);
+    }
+
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+        String sentence = scan.nextLine();
+        Main a = new Main();
+        String tempSentence = a.revers(sentence);
+        tempSentence= tempSentence.replaceFirst("owt", "owT");
+        String ansSentence = a.revers(tempSentence);
+        System.out.println(ansSentence);
+    }
+}
