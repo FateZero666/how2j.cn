@@ -1,0 +1,66 @@
+package com.company;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
+
+public class Main {
+
+//    public String revers(String sentence) {
+//        char[] charSentence = sentence.toCharArray();
+//        int sLength = charSentence.length;
+//        char[] tempSentence = new char[sLength];
+//        for(int i = 0; i < sLength; ++i) {
+//            tempSentence[sLength - 1 - i] = charSentence[i];
+//        }
+//        return String.valueOf(tempSentence);
+//    }
+
+    public String randomString(int length) {
+        char[] c = new char[length];
+        for(int i = 0; i < length; ++i) {
+            int seed = 0;
+            do{
+                seed = 48 + (int)Math.round((Math.random() * 74));
+            } while(seed >57 && seed < 65 || seed > 90 && seed < 97);
+            c[i] = (char) seed;
+        }
+        return String.valueOf(c);
+    }
+
+    public static void main(String[] args) {
+        Main a = new Main();
+        String[] s = new String[100];
+        String[] ans = new String[100];
+        int count = 0;
+        Map<String, Integer> m = new HashMap<>();
+        for(int i = 0; i < 100; ++i) {
+            s[i] = a.randomString(2);
+            System.out.print(s[i]);
+            if( (i + 1) % 50 == 0) {
+                System.out.print("\n");
+            } else {
+                System.out.print(" ");
+            }
+            if(m.containsKey(s[i])) {
+                int temp = m.get(s[i]);
+                ++temp;
+                m.put(s[i], temp);
+            } else {
+                m.put(s[i], 1);
+            }
+        }
+        for(Map.Entry<String, Integer> entry: m.entrySet()) {
+            if(entry.getValue() > 1) {
+                ans[count++] = entry.getKey();
+            }
+        }
+        System.out.printf("总共有%d种重复的字符串\n分别是：\n", count);
+        for(int i = 0; i < count; ++i) {
+            System.out.print(ans[i]);
+            if(i < count - 1) {
+                System.out.print(" ");
+            }
+        }
+    }
+}
