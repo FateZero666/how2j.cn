@@ -1,0 +1,20 @@
+package com.company;
+
+import java.util.Scanner;
+
+public class Main {
+
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+        String sentence = scan.nextLine();
+        String[] subSentence = sentence.split(" ");
+        int count = 0;
+        for(int i = 0; i < subSentence.length; ++i) {
+           char c = subSentence[i].charAt(0);
+           if(c == 'p') {
+               ++count;
+           }
+        }
+        System.out.print("The number of words begin with 'p' is : " + count);
+    }
+}
