@@ -1,0 +1,46 @@
+package com.company;
+
+import java.io.File;
+import java.util.Date;
+
+public class Main {
+
+    public static void main(String[] args) {
+        File f = new File("c:/Windows");
+        File min = new File("c:/");
+        File max = new File("c:/");
+        long mi = Long.MAX_VALUE;
+        long ma = 0;
+
+        File[] fs = f.listFiles();
+        for(int i = 0; i < fs.length; ++i) {
+            if(fs[i].isDirectory()) {
+                File[] temp = fs[i].listFiles(); //可能有空文件,要注意
+                if(temp != null) {
+                    for (int j = 0; j < temp.length; ++j) {
+                        if (temp[j].length() > ma) {
+                            ma = temp[j].length();
+                            max = temp[j];
+                        }
+                        if (temp[j].length() < mi) {
+                            mi = temp[j].length();
+                            min = temp[j];
+                        }
+                    }
+                }
+            } else {
+                if(fs[i].length() > ma) {
+                    ma = fs[i].length();
+                    max = fs[i];
+                }
+                if(fs[i].length() < mi) {
+                    mi = fs[i].length();
+                    min = fs[i];
+                }
+            }
+        }
+
+        System.out.println("The max file is： " + max + ", size" + ma);
+        System.out.println("The min file is: " + min + ", size" + mi);
+    }
+}
