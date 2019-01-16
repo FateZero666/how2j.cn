@@ -1,0 +1,55 @@
+package com.company;
+
+import java.text.SimpleDateFormat;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
+import java.util.Date;
+
+
+public class Main {
+
+    public Date randomDate(long begin, long end) {
+        long random = begin + (long)(Math.random() * (end - begin));
+        return new Date(random);
+    }
+
+    public static void main(String[] args) {
+        long timeBegin = 0l;
+        long timeEnd = (((365l * 4 + 1) * 7 + 365 * 3 + 1) * 24 - 8) * 3600 * 1000;
+        Date[] rd = new Date[9];
+        Main a = new Main();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        System.out.println("The get of random time:\n");
+        Map<Date, Long> mp = new HashMap<>();
+        for(int i = 0; i < 9; ++i) {
+            rd[i] = a.randomDate(timeBegin, timeEnd);
+            String str = sdf.format(rd[i]);
+            System.out.print(str);
+            if((i + 1) % 3 == 0) {
+                System.out.print("\n");
+            } else {
+                System.out.print(" ");
+            }
+            mp.put(rd[i], rd[i].getTime());
+        }
+        System.out.println("The get of sort of the random time:");
+        for(int i = 0; i < 9; ++i) {
+            long min = Long.MAX_VALUE; //if left move 63,you will get a negative value;
+            Date mindate = new Date();
+            for(Map.Entry<Date, Long> entry: mp.entrySet()) {
+                if(entry.getValue() < min) {
+                    min = entry.getValue();
+                    mindate = entry.getKey();
+                }
+            }
+            System.out.print(sdf.format(mindate));
+            mp.remove(mindate);
+            if((i + 1) % 3 == 0) {
+                System.out.println();
+            } else {
+                System.out.print(" ");
+            }
+        }
+    }
+}
