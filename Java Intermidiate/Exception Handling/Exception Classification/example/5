@@ -1,0 +1,30 @@
+package com.company;
+
+import java.text.SimpleDateFormat;
+import java.util.*;
+
+
+public class Main {
+
+    public int method() {
+        try{
+            return 1;
+        } catch (Exception e) {
+            return 2;
+        } finally {
+            return 3;
+        }
+    }
+
+    public static void main(String[] args) {
+
+        try{
+            int k = 5 / 0;
+        } catch(ArithmeticException e) {
+            System.out.println("ArithmeticException");
+            e.printStackTrace();
+        }
+        //可以被捕捉
+
+    }
+}
