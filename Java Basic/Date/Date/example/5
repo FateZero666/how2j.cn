@@ -1,0 +1,34 @@
+package com.company;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
+import java.util.Date;
+
+
+public class Main {
+
+    public String randomString(int length) {
+        char[] temp = new char[length];
+        for(int i = 0; i < length; ++i) {
+            int seed = 0;
+            do{
+                seed = 48 + (int)Math.round(Math.random() * 74f);
+            }while(seed > 57 && seed < 65 || seed > 90 && seed < 97);
+            temp[i] = (char)seed;
+        }
+        return String.valueOf(temp);
+    }
+
+    public static void main(String[] args) {
+        long timeBegin = (((365l * 4 + 1) * 6 + 365) * 24 -8) * 3600 *1000;//remember to change the type to long
+        long timeEnd = timeBegin + 365l * 24 * 3600 * 1000 - 1;
+        Date begin = new Date(timeBegin);
+        Date end = new Date(timeEnd);
+        System.out.println("The begin of 1995:" + begin);
+        System.out.println("The end of 1995:" + end);
+        long timeRandom = timeBegin + (long)Math.round((Math.random() * (double)(timeEnd - timeBegin)));
+        Date random = new Date(timeRandom);
+        System.out.println("The random time of 1995:" + random);
+    }
+}
