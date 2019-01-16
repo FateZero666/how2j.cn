@@ -1,0 +1,66 @@
+package com.company;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
+import java.util.Date;
+
+class Account {
+    private double balance;
+
+    public Account() {
+        this(0);
+    }
+    public Account(double init) {
+        if(init < 0) return;
+        this.balance = init;
+    }
+
+    public double getBalance() {
+        return this.balance;
+    }
+    public void deposit(double money) {
+        this.balance += money;
+    }
+    public void withdraw(double money) throws OverdraftException{
+        double result = this.balance - money;
+        OverdraftException temp = new OverdraftException();
+        if(result < 0 && -result > temp.getDeficit()) throw temp;
+        else this.balance = result;
+    }
+}
+
+class OverdraftException extends Exception {
+      private double deficit;
+
+      @Override
+      public OverdraftException() {
+          this("Sorry，you overdaft limit is insufficient。",5000);
+      }
+      @Override
+      public OverdraftException(String message, double init) {
+          super(message);
+          this.deficit = init;
+      }
+
+      public double getDeficit() {
+          return this.deficit;
+      }
+
+
+}
+
+public class Main {
+
+
+    public static void main(String[] args) {
+            Account a = new Account();
+            a.deposit(100);
+            a.deposit(1000);
+            try{
+                a.withdraw(10000);
+            } catch (OverdraftException e) {
+                e.printStackTrace();
+            }
+    }
+}
