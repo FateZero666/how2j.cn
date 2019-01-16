@@ -1,0 +1,29 @@
+package com.company;
+
+import java.io.File;
+import java.util.Date;
+
+public class Main {
+
+    public static void main(String[] args) {
+        File f = new File("c:/Windows");
+        File min = new File("c:/");
+        File max = new File("c:/");
+        long mi = Long.MAX_VALUE;
+        long ma = 0;
+
+        File[] fs = f.listFiles();
+        for(int i = 0; i < fs.length; ++i) {
+            if(fs[i].length() > ma) {
+                ma = fs[i].length();
+                max = fs[i];
+            }
+            if(fs[i].length() < mi) {
+                mi = fs[i].length();
+                min = fs[i];
+            }
+        }
+        System.out.println("The max file is： " + max + ", size" + ma);
+        System.out.println("The min file is: " + min + ", size" + mi);
+    }
+}
