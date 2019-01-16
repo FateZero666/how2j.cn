@@ -1,0 +1,86 @@
+package com.company;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
+import java.util.Date;
+
+class Account {
+    protected double balance;
+
+    public Account() {
+        this(0);
+    }
+    public Account(double init) {
+        if(init < 0) return;
+        this.balance = init;
+    }
+
+    public double getBalance() {
+        return this.balance;
+    }
+    public void deposit(double money) {
+        this.balance += money;
+    }
+    public void withdraw(double money) throws OverdraftException{
+        double result = this.balance - money;
+        OverdraftException temp = new OverdraftException();
+        if(result < 0 && -result > temp.getDeficit()) throw temp;
+        else this.balance = result;
+    }
+}
+
+class OverdraftException extends Exception {
+      private double deficit;
+
+
+      public OverdraftException() {
+          this("Sorry，you overdaft limit is insufficient。",5000);
+      }
+      public OverdraftException(String message, double init) {
+          super(message);
+          this.deficit = init;
+      }
+
+      public double getDeficit() {
+          return this.deficit;
+      }
+
+
+}
+
+class CheckingAccount extends Account {
+      private double overdraftProtection;
+
+      public CheckingAccount(double balance) {
+          this(balance, 5000.0);
+      }
+      public CheckingAccount(double balance, double protect) {
+          this.balance = balance;
+          this.overdraftProtection = protect;
+      }
+
+      @Override
+      public void withdraw(double amt) throws OverdraftException{
+          OverdraftException e = new OverdraftException("Sorry, your overdraft limit is insufficient:", this.overdraftProtection);
+          double result = this.balance - amt;
+          if(result < 0 && -result > e.getDeficit()) throw e;
+          else this.balance = result;
+      }
+}
+
+
+public class Main {
+
+
+    public static void main(String[] args) {
+            CheckingAccount a = new CheckingAccount(1000,5000);
+            try{
+                a.withdraw(500);
+                a.withdraw(2000);
+                a.withdraw(10000);
+            } catch (OverdraftException e) {
+                e.printStackTrace();
+            }
+    }
+}
