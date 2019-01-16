@@ -1,0 +1,26 @@
+package com.company;
+
+import java.text.SimpleDateFormat;
+import java.util.*;
+
+
+public class Main {
+
+    public int method() {
+        try{
+            return 1;
+        } catch (Exception e) {
+            return 2;
+        } finally {
+            return 3;
+        }
+    }
+
+    public static void main(String[] args) {
+        Main a = new Main();
+        System.out.print(a.method());
+        
+
+    }
+}
+//返回的是3
