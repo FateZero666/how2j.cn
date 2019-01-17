@@ -1,0 +1,63 @@
+package com.company;
+
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.File;
+
+
+
+public class Main {
+
+
+    public static void main(String[] args) {
+
+        try {
+            File f = new File("/Users/saber/text/text.pdf");
+            FileInputStream fis = new FileInputStream(f);
+
+            byte[] sourceDate = new byte[(int)f.length()];
+            byte[][] data = new byte[3][];
+
+            fis.read(sourceDate);
+
+            int i = 0, length = (int)f.length();
+
+            for(int j = 0; j < 3; ++j) {
+                if(length - i > 102400) {
+                    data[j] = new byte[102400];
+                } else {
+                    data[j] = new byte[length - i];
+                }
+
+                for(int k = 0; k < 102400 && i < length; ++k, ++i) {
+                    data[j][k] = sourceDate[i];
+                }
+            }
+
+            fis.close();
+
+            File[] fd = new File[3];
+            fd[0] = new File("/Users/saber/text/text.pdf-0");
+            fd[1] = new File("/Users/saber/text/text.pdf-1");
+            fd[2] = new File("/Users/saber/text/text.pdf-2");
+
+            FileOutputStream fos = new FileOutputStream(fd[0]);
+            fos.write(data[0]);
+            fos = new FileOutputStream(fd[1]);
+            fos.write(data[1]);
+            fos = new FileOutputStream(fd[2]);
+            fos.write(data[2]);
+
+            for(i = 0; i < 3; ++i) {
+                System.out.println("输出子文件" + fd[i] + ",其大小是"+ fd[i].length() + "字节");
+            }
+
+            fos.close();
+
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+}
