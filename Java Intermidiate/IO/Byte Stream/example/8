@@ -1,0 +1,55 @@
+package com.company;
+
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.File;
+
+
+
+public class Main {
+
+
+    public static void main(String[] args) {
+
+        try {
+
+
+            File[] fd = new File[3];
+            fd[0] = new File("/Users/saber/text/text.pdf-0");
+            fd[1] = new File("/Users/saber/text/text.pdf-1");
+            fd[2] = new File("/Users/saber/text/text.pdf-2");
+
+            FileInputStream fis = new FileInputStream(fd[0]);
+            int totalLength = (int)(fd[0].length() + fd[1].length() + fd[2].length());
+
+            byte[][] all = new byte[3][];
+            byte[] total = new byte[totalLength];
+
+            for(int i = 0, k = 0; i < 3; ++i) {
+                fis = new FileInputStream(fd[i]);
+                int length = (int)fd[i].length();
+                all[i] = new byte[length];
+                totalLength += length;
+                fis.read(all[i]);
+                for(int j = 0; j < length; ++j, ++k) {
+                    total[k] = all[i][j];
+                }
+            }
+
+            fis.close();
+
+            File result = new File("/Users/saber/text/text2.pdf");
+            FileOutputStream fos = new FileOutputStream(result);
+
+            fos.write(total);
+            fos.close();
+            System.out.println("输出合成文件" + result + "，其大小为" + result.length() + "字节");
+
+
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+}
