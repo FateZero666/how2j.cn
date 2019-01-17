@@ -1,0 +1,36 @@
+package com.company;
+
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
+import java.util.Date;
+import java.util.Date;
+import java.io.File;
+
+
+
+public class Main {
+
+
+    public static void main(String[] args) {
+
+        try {
+            File f = new File("/Users/saber/text/text/text/text.txt");
+            if(!f.exists()) {
+                File dir = new File(f.getParent());
+                dir.mkdirs(); // one level can use "mkdir"
+                f.createNewFile();
+            }
+            byte data[] = {88, 89};
+            FileOutputStream fis = new FileOutputStream(f);
+            fis.write(data);
+            fis.close();
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+}
