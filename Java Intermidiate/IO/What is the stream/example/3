@@ -1,0 +1,27 @@
+package com.company;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
+import java.util.Date;
+import java.util.Date;
+import java.io.File;
+
+
+
+public class Main {
+
+
+    public static void main(String[] args) {
+
+        try {
+            File f = new File("/Users/saber/package.json");
+            FileInputStream fis = new FileInputStream(f);
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+}
