@@ -1,0 +1,64 @@
+package com.company;
+
+import java.io.*;
+
+
+public class Main {
+
+    public static void encodeFile(File encodingFile, File encodedFile) {
+           try(FileReader fr = new FileReader(encodingFile); FileWriter fw = new FileWriter(encodedFile)) {
+               int limit = (int)encodingFile.length();
+               char[] before = new char[limit];
+               char[] after = new char[limit];
+
+               fr.read(before);
+
+               for(int i = 0; i < limit; ++i) {
+                   int seed = (int) before[i];
+                   if(seed > 47 && seed < 57 || seed > 64 && seed < 90 || seed > 96 && seed < 122) {
+                       ++seed;
+                   } else if(seed == 57) {
+                       seed = 48;
+                   } else if(seed == 90) {
+                       seed = 65;
+                   } else if(seed == 122) {
+                       seed = 97;
+                   }
+                   after[i] = (char)seed;
+               }
+
+               fw.write(after);
+
+           } catch(IOException e) {
+               e.printStackTrace();
+           }
+    }
+
+    public static void main(String[] args) {
+
+        File encodingFile = new File("/Users/saber/text/text.txt");
+        File encodedFile = new File("/Users/saber/text/text2.txt");
+
+        Main.encodeFile(encodingFile, encodedFile);
+
+        try(FileReader frb = new FileReader(encodingFile); FileReader fra = new FileReader(encodedFile)) {
+            char[] before = new char[(int)encodingFile.length()];
+            char[] after = new char[(int)encodedFile.length()];
+
+            frb.read(before);
+            fra.read(after);
+
+            System.out.printf("加密前的字符串为：%n");
+            for(char c: before) {
+                System.out.print(c);
+            }
+            System.out.printf("%n加密后的字符串为：%n");
+            for(char c: after) {
+                System.out.print(c);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+}
