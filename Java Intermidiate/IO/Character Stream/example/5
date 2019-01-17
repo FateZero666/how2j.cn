@@ -1,0 +1,110 @@
+package com.company;
+
+import java.io.*;
+import java.nio.charset.MalformedInputException;
+
+
+public class Main {
+
+    public static void encodeFile(File encodingFile, File encodedFile) {
+           try(FileReader fr = new FileReader(encodingFile); FileWriter fw = new FileWriter(encodedFile)) {
+               int limit = (int)encodingFile.length();
+               char[] before = new char[limit];
+               char[] after = new char[limit];
+
+               fr.read(before);
+
+               for(int i = 0; i < limit; ++i) {
+                   int seed = (int) before[i];
+                   if(seed > 47 && seed < 57 || seed > 64 && seed < 90 || seed > 96 && seed < 122) {
+                       ++seed;
+                   } else if(seed == 57) {
+                       seed = 48;
+                   } else if(seed == 90) {
+                       seed = 65;
+                   } else if(seed == 122) {
+                       seed = 97;
+                   }
+                   after[i] = (char)seed;
+               }
+
+               fw.write(after);
+
+           } catch(IOException e) {
+               e.printStackTrace();
+           }
+    }
+
+    public static void decodeFile(File decodingFile, File decodedFile) {
+        try(FileReader fr = new FileReader(decodingFile); FileWriter fw = new FileWriter(decodedFile)) {
+            int limit = (int)decodingFile.length();
+            char[] before = new char[limit];
+            char[] after = new char[limit];
+
+            fr.read(before);
+
+            for(int i = 0; i < limit; ++i) {
+                int seed = (int) before[i];
+                if(seed > 48 && seed < 58 || seed > 65 && seed < 91 || seed > 97 && seed < 122) {
+                    --seed;
+                } else if(seed == 48) {
+                    seed = 57;
+                } else if(seed == 65) {
+                    seed = 90;
+                } else if(seed == 97) {
+                    seed = 122;
+                }
+                after[i] = (char)seed;
+            }
+
+            fw.write(after);
+
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void main(String[] args) {
+
+        File encodingFile = new File("/Users/saber/text/text.txt");
+        File encodedFile = new File("/Users/saber/text/text2.txt");
+        File decodeedFile = new File("/Users/saber/text/text3.txt");
+
+        Main.encodeFile(encodingFile, encodedFile);
+        Main.decodeFile(encodedFile, decodeedFile);
+
+        try(FileReader fr1 = new FileReader(encodingFile); FileReader fr2 = new FileReader(encodedFile); FileReader fr3 = new FileReader(decodeedFile)) {
+            char[] before = new char[(int)encodingFile.length()];
+            char[] after = new char[(int)encodedFile.length()];
+            char[] result = new char[(int)decodeedFile.length()];
+
+            fr1.read(before);
+            System.out.printf("加密前的字符串为：%n");
+            for(char c: before) {
+                System.out.print(c);
+            }
+
+            fr1 = new FileReader(encodedFile);
+            fr1.read(after);
+
+            //fr2.read(after);
+            System.out.printf("%n加密后的字符串为：%n");
+            for(char c: after) {
+                System.out.print(c);
+            }
+
+            fr1 = new FileReader(decodeedFile);
+            fr1.read(result);
+
+            //fr3.read(result);
+            System.out.println("\n解密后的字符串为：");
+            for(char c: result) {
+                System.out.print(c);
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+}
