@@ -1,0 +1,30 @@
+package com.company;
+
+
+import java.io.*;
+import java.nio.charset.Charset;
+
+public class Main {
+
+
+    public static void main(String[] args) {
+
+        byte[] all = new byte[3];
+        all[0] = (byte)0xE5;
+        all[1] = (byte)0xB1;
+        all[2] = (byte)0x8;
+
+        for(byte b: all) {
+            int i = b & 0xff;
+            System.out.println(Integer.toHexString(i));
+        }
+
+        System.out.println("放在UTF-8上为：");
+        try {
+            String str = new String(all, "UTF-8");
+            System.out.println(str);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+    }
+}
