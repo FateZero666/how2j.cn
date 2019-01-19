@@ -1,20 +1,24 @@
 package com.company;
 
 
+import jdk.dynalink.beans.StaticClass;
+
 import java.io.*;
 import java.nio.charset.Charset;
 
 public class Main {
 
+    public static void removeComments(File javaFile) {
 
-    public static void main(String[] args) {
+        if(!javaFile.isFile()) {
+            System.out.println("这不是java文件");
+        }
 
-        File f = new File("/Users/saber/text/text.txt");
-        File f2 = new File("/Users/saber/text/text2.txt");
+        File f = new File("/Users/saber/temp.txt");
 
-        try(FileReader fr = new FileReader(f); BufferedReader br = new BufferedReader(fr);
-            FileWriter fw = new FileWriter(f2); PrintWriter pw = new PrintWriter(fw)
-           )
+        try(FileReader fr = new FileReader(javaFile); BufferedReader br = new BufferedReader(fr);
+            FileWriter fw = new FileWriter(f); PrintWriter pw = new PrintWriter(fw);
+        )
         {
             while(true) {
                 String line = br.readLine();
@@ -34,5 +38,37 @@ public class Main {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        try(FileReader fr = new FileReader(f); BufferedReader br = new BufferedReader(fr);
+            FileWriter fw = new FileWriter(javaFile); PrintWriter pw = new PrintWriter(fw);
+        )
+        {
+            while(true) {
+                String line = br.readLine();
+                System.out.println(line);
+                if(null == line) {
+                    break;
+                } else {
+                        pw.println(line);
+                }
+            }
+            pw.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try{
+            f.delete();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void main(String[] args) {
+
+        File f = new File("/Users/saber/text/text.txt");
+
+        Main.removeComments(f);
+
     }
 }
