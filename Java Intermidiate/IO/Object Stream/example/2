@@ -1,0 +1,56 @@
+package com.company;
+
+
+import java.io.*;
+
+
+
+class Hero implements Serializable {
+    //表示这个类当前的版本，如果有了变化，比如新设计了属性，就应该修改这个版本号
+    private static final long serialVersionUID = 1L;
+    public String name;
+    public float hp;
+
+}
+
+
+
+public class Main {
+
+
+    public static void main(String[] args) {
+
+            Hero[] h = new Hero[10];
+
+            for(int i = 0; i < 10; ++i) {
+                h[i] = new Hero();
+                h[i].name = "hero";
+                h[i].hp = (float)i;
+            }
+
+            File f = new File("/Users/saber/text/hero.lol");
+
+            try(FileOutputStream fos = new FileOutputStream(f); ObjectOutputStream oos = new ObjectOutputStream(fos);
+                FileInputStream fis = new FileInputStream(f); ObjectInputStream ois = new ObjectInputStream(fis)
+                )
+             {
+                 //for(int i = 0; i < 10; ++i)
+                    oos.writeObject(h);
+                 Hero[] h2 = new Hero[10];
+                 //for(int i = 0; i < 10; ++i)
+                    h2 = (Hero[]) ois.readObject();
+                 int size = h2.length;
+                 System.out.println("size的大小：" + size);
+                 for(int i = 0; i < size; ++i) {
+                     if(h2[i] != null)
+                         System.out.printf("%s: %f%n", h2[i].name,h2[i].hp);
+                     else
+                         break;
+                 }
+             } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+    }
+}
