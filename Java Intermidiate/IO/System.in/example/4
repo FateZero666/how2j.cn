@@ -1,0 +1,43 @@
+package com.company;
+
+
+import java.io.*;
+import java.util.Scanner;
+
+
+public class Main {
+
+
+    public static void main(String[] args) {
+
+        Scanner scan = new Scanner(System.in);
+        System.out.println("请输入类名：");
+        String classname = scan.nextLine();
+        System.out.println("请输入类中属性的类型：");
+        String type = scan.nextLine();
+        System.out.println("请输入属性名：");
+        String property = scan.nextLine();
+
+        File f = new File("/Users/saber/text/text.txt");
+
+        try(FileWriter fr = new FileWriter(f)) {
+            String data = new String("public class " + classname + " {\n" +
+                    "\tpublic " + type + " " + property + ";\n" +
+                    "\tpublic " + classname + "() {\n" +
+                    "\t}\n" +
+                    "\tpublic void set" + property + " (" + type +  " " + property + "){\n" +
+                    "\t\tthis." + property + " = " + property + ";\n" +
+                    "\t}\n" +
+                    "\n" +
+                    "\tpublic " + type + " get" + property + "(){\n" +
+                    "\t\treturn this." + property + ";\n" +
+                    "\t}\n" +
+                    "}");
+            char[] cs = data.toCharArray();
+            fr.write(cs);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+}
