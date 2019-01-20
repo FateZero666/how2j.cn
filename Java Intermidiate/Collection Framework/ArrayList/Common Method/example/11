@@ -1,0 +1,51 @@
+package com.company;
+
+
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Scanner;
+
+class Hero {
+    public String name;
+    public float hp;
+
+    public int damage;
+
+    public Hero() {
+
+    }
+
+    // 增加一个初始化name的构造方法
+    public Hero(String name) {
+
+        this.name = name;
+    }
+
+    // 重写toString方法
+    public String toString() {
+        return name;
+    }
+
+}
+
+public class Main {
+
+
+    public static void main(String[] args) {
+
+        ArrayList heros = new ArrayList();
+
+        for(int i = 0; i < 5; ++i) {
+            heros.add(new Hero("hero " + i));
+        }
+
+        for(int i = 0; i < 5; ++i) {
+            Hero temp = (Hero) heros.get(i);
+            if(temp.name.equals("hero 1")) {
+                System.out.println("找到name是hero 1的对象");
+                break;
+            }
+        }
+       
+    }
+}
