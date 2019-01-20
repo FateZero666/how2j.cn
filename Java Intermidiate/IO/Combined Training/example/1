@@ -1,0 +1,31 @@
+package com.company;
+
+
+import java.io.*;
+import java.util.Scanner;
+
+
+public class Main {
+
+    public static void copyFile(String srcFile, String destFile) {
+
+        File srcf = new File(srcFile);
+        File destf = new File(destFile);
+
+        try(FileReader fr = new FileReader(srcf); FileWriter fw = new FileWriter(destFile)) {
+            char[] all = new char[(int)srcf.length()];
+            fr.read(all);
+            fw.write(all);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
+    public static void main(String[] args) {
+
+        Main.copyFile("/Users/saber/text/text.txt","/Users/saber/text/text2.txt");
+
+    }
+}
