@@ -1,0 +1,81 @@
+package com.company;
+
+
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+abstract class HeroItem{
+
+}
+
+class Item extends HeroItem{
+    String name;
+    int price;
+
+    public Item(){
+
+    }
+
+    //提供一个初始化name的构造方法
+    public Item(String name){
+        this.name = name;
+    }
+
+    public void effect(){
+        System.out.println("物品使用后，可以有效果");
+    }
+
+}
+
+class Hero extends HeroItem{
+    String name;
+
+    public Hero() {
+
+    }
+
+    //提供一个初始化name的构造方法
+    public Hero(String name){
+        this.name = name;
+    }
+
+    public void effect(){
+        System.out.println("Hi, My hero!");
+    }
+
+}
+
+
+public class Main {
+
+
+    public static void main(String[] args) {
+
+        ArrayList<Hero> heros = new ArrayList<>();
+        for(int i = 0; i < 100; ++i) {
+            heros.add(new Hero("hero" + i));
+        }
+
+        {
+            int j = 0;
+            for(int i = 0; i < 100; ) {
+                if(i != 0 && i % 8 == 0) {
+                    i++;
+                } else {
+                    heros.set(j++, heros.get(i++));
+                }
+            }
+
+            int size = 100 - j;
+
+            for (int i = 0; i < size; ++i) {
+                heros.remove(j);
+            }
+
+        }
+        System.out.println(heros.size());
+
+    }
+}
