@@ -1,0 +1,120 @@
+<html>
+<table>
+<tr>
+	<td align="right">
+		<font color ="red">*</font>用户名:
+	</td>
+	<td>
+		<input type = "text" size = "40"><font color ="red">用户名不得小于3个字符</font>
+	</td>
+</tr>
+<tr>
+	<td align="right">
+		<font color ="red">*</font>密码:
+	</td>
+	<td>
+		<input type = "password" size = "40">
+	</td>
+</tr>
+<tr>
+	<td align="right">
+		<font color ="red">*</font>确认密码:
+	</td>
+	<td>
+		<input type = "password" size = "40">
+	</td>
+</tr>
+<tr>
+	<td align="right">
+		<font color ="red">*</font>Email:
+	</td>
+	<td>
+		<input type = "text" size = "40">
+	</td>
+</tr>
+<tr>
+	<td align="right">
+		<font color ="red">*</font>真实姓名:
+	</td>
+	<td>
+		<input type = "text" size = "40"><br/>
+	</td>
+</tr>
+<tr>
+	<td align="right">
+		<font color ="red">*</font>性别:
+	</td>
+	<td>
+		<select>
+			<option>男</option>
+			<option>女</option>
+		</select>
+	</td>
+</tr>
+<tr>
+	<td align="right">
+		<font color ="red">*</font>生日:
+	</td>
+	<td>	
+		<select>
+				<option>1980</option>
+				<option>1981</option>
+		</select>
+		<select>
+				<option>1</option>
+				<option>2</option>
+		</select>
+		<select>
+				<option>1</option>
+				<option>2</option>
+		</select>
+	</td>
+</tr>
+<tr>
+	<td align="right">
+		<font color ="red">*</font>手机:
+	</td>
+	<td>
+		<input type = "text" size = "40">
+	</td>
+</tr>
+<tr>
+	<td align="right">	
+		<font color ="red">*</font>居住地:
+	</td>
+	<td>
+		<select>
+				<option>四川省</option>
+				<option>浙江省</option>
+		</select>
+		<select>
+				<option>成都市</option>
+				<option>杭州市</option>
+		</select>
+		<select>
+				<option>成华区</option>
+				<option>西湖区</option>
+		</select>
+		<select>
+				<option>三圣乡</option>
+				<option>玉泉</option>
+		</select>
+	</td>	
+</tr>
+<tr>
+	<td align="right">
+		<font color ="red">*</font>QQ:
+	</td>
+	<td>
+		<input type = "text" size = "40">
+	</td>
+</tr>
+<tr>
+	<td>
+	</td>
+	<td>
+		<font color ="blue" size = "-2"> 设置我的QQ在线状态 </font>
+	</td>
+</tr>
+</table>
+</html>
