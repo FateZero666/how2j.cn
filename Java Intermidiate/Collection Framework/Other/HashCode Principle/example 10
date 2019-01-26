@@ -1,0 +1,187 @@
+package com.company;
+
+import java.util.*;
+
+class Hero{
+    public String name;
+    public int hp;
+
+    public Hero(String name, int hp) {
+        this.name = name;
+        this.hp = hp;
+    }
+
+    @Override
+    public String toString() {
+        return this.name + " " + this.hp;
+    }
+}
+
+class Node{
+    public Node leftNode;
+    public Node rightNode;
+
+    public Object value;
+
+    public void add(Object v) {
+        if(null == this.value) {
+            value = v;
+        } else {
+            if(((Hero)v).hp - ((Hero)this.value).hp > 0) {
+                if(this.leftNode == null) {
+                    this.leftNode = new Node();
+                }
+                this.leftNode.add(v);
+            } else {
+                if(this.rightNode == null) {
+                    this.rightNode = new Node();
+                }
+                this.rightNode.add(v);
+            }
+        }
+    }
+
+    public List<Object> values(){
+        List<Object> values = new ArrayList<>();
+
+        if(null != leftNode) {
+            values.addAll(leftNode.values());
+        }
+
+        values.add(this.value);
+
+        if(null != rightNode) {
+            values.addAll(rightNode.values());
+        }
+
+        return values;
+    }
+}
+
+class Entry {
+
+    public Entry(Object key, Object value) {
+        super();
+        this.key = key;
+        this.value = value;
+    }
+    public Object key;
+    public Object value;
+    @Override
+    public String toString() {
+        return "[key=" + key + ", value=" + value + "]";
+    }
+
+}
+
+interface IHashMap {
+    public void put(String key,Object object);
+    public Object get(String key);
+}
+
+class MyHashMap implements IHashMap{
+    Object[] mhm = new Object[2000];
+
+    @Override
+    public void put(String key, Object object) {
+        int place = Main.hashcode(key);
+        if(this.mhm[place] == null) {
+            this.mhm[place] = new LinkedList<Entry>();
+        }
+        LinkedList<Entry> temp = (LinkedList<Entry>) this.mhm[place];
+        Entry now = new Entry(key, object);
+        temp.add(now);
+    }
+    @Override
+    public Object get(String key) {
+        int place = Main.hashcode(key);
+        if(this.mhm[place] == null) {
+            return null;
+        }
+        LinkedList<Entry> ll = (LinkedList<Entry>) this.mhm[place];
+        {
+            int size = ll.size();
+            for(int i = 0; i < size; ++i) {
+                if(ll.get(i).key.equals(key)) {
+                    return ll.get(i).value;
+                }
+            }
+        }
+        return null;
+    }
+}
+
+public class Main {
+
+    public static String randomString(int length) {
+        char[] c = new char[length];
+        for(int i = 0; i < length; ++i) {
+            int seed = 0;
+            do{
+                seed = 48 + (int)Math.round((Math.random() * 74));
+            } while(seed >57 && seed < 65 || seed > 90 && seed < 97);
+            c[i] = (char) seed;
+        }
+        return String.valueOf(c);
+    }
+
+    public static void main(String[] args) {
+
+        ArrayList<Hero> al = new ArrayList<>();
+        MyHashMap mhm = new MyHashMap();
+
+        final int limit = 100000;
+
+        for(int i = 0; i < limit; ++i) {
+            String name = "hero-" + (1000 + (int)(Math.random() * 9000));
+            Hero temp = new Hero(name, 1000);
+            al.add(temp);
+            if(mhm.get(name) == null) {
+                mhm.put(name, new LinkedList<Hero>());
+            }
+            LinkedList<Hero> lltemp = (LinkedList<Hero>) mhm.get(name);
+            lltemp.add(temp);
+        }
+
+        int count = 0;
+        long start = System.currentTimeMillis();
+        for(int i = 0; i < limit; ++i) {
+            if(al.get(i).name.equals("hero-5555")) {
+                ++count;
+            }
+        }
+        long end = System.currentTimeMillis();
+        System.out.printf("找hero-5000共花了%d时间，发现%d个.\n",end - start, count);
+
+        count = 0;
+        start = System.currentTimeMillis();
+        LinkedList<Hero> l = (LinkedList<Hero>) mhm.get("hero-5555");
+        count = l.size();
+        end = System.currentTimeMillis();
+        System.out.printf("找hero-5000共花了%d时间，发现%d个",end - start, count);
+    }
+
+    public static int hashcode(String s) {
+        char[] c = s.toCharArray();
+        {
+            int size = c.length;
+            int count = 0;
+            for(int i = 0; i < size; ++i){
+                count += (int)c[i];
+            }
+            return Math.abs(count * 23) % 2000;
+        }
+    }
+
+    public static void insertMid(List<Integer>l, String type) {
+        int total = 100000;
+        final int number = 8;
+
+        long start = System.currentTimeMillis();
+        for(int i = 0; i < total; ++i) {
+            l.add(i / 2, number);
+        }
+        long end = System.currentTimeMillis();
+        System.out.printf("在%s 最中间插入%d条数据，总共耗时 %d毫秒 %n", type, total, end - start);
+    }
+}
