@@ -1,0 +1,113 @@
+package com.company;
+
+import java.util.*;
+
+class Hero{
+    public String name;
+    public int hp;
+
+    public Hero(String name, int hp) {
+        this.name = name;
+        this.hp = hp;
+    }
+
+    @Override
+    public String toString() {
+        return this.name + " " + this.hp;
+    }
+}
+
+class Node{
+    public Node leftNode;
+    public Node rightNode;
+
+    public Object value;
+
+    public void add(Object v) {
+        if(null == this.value) {
+            value = v;
+        } else {
+            if(((Hero)v).hp - ((Hero)this.value).hp > 0) {
+                if(this.leftNode == null) {
+                    this.leftNode = new Node();
+                }
+                this.leftNode.add(v);
+            } else {
+                if(this.rightNode == null) {
+                    this.rightNode = new Node();
+                }
+                this.rightNode.add(v);
+            }
+        }
+    }
+
+    public List<Object> values(){
+        List<Object> values = new ArrayList<>();
+
+        if(null != leftNode) {
+            values.addAll(leftNode.values());
+        }
+
+        values.add(this.value);
+
+        if(null != rightNode) {
+            values.addAll(rightNode.values());
+        }
+
+        return values;
+    }
+}
+
+
+public class Main {
+
+    public static String randomString(int length) {
+        char[] c = new char[length];
+        for(int i = 0; i < length; ++i) {
+            int seed = 0;
+            do{
+                seed = 48 + (int)Math.round((Math.random() * 74));
+            } while(seed >57 && seed < 65 || seed > 90 && seed < 97);
+            c[i] = (char) seed;
+        }
+        return String.valueOf(c);
+    }
+
+    public static void main(String[] args) {
+
+        String[] st = new String[100];
+        for(int i = 0; i < 100; ++i) {
+            st[i] = Main.randomString(2 + (int)Math.round(8 * Math.random()));
+            System.out.print(Main.hashcode(st[i]));
+            if((i + 1) % 10 == 0) {
+                System.out.println();
+            } else {
+                System.out.print(" ");
+            }
+        }
+    }
+
+    public static int hashcode(String s) {
+        char[] c = s.toCharArray();
+        {
+            int size = c.length;
+            int count = 0;
+            for(int i = 0; i < size; ++i){
+                count += (int)c[i];
+            }
+            return Math.abs(count * 23) % 2000;
+        }
+    }
+
+    public static void insertMid(List<Integer>l, String type) {
+        int total = 100000;
+        final int number = 8;
+
+        long start = System.currentTimeMillis();
+        for(int i = 0; i < total; ++i) {
+            l.add(i / 2, number);
+        }
+        long end = System.currentTimeMillis();
+        System.out.printf("在%s 最中间插入%d条数据，总共耗时 %d毫秒 %n", type, total, end - start);
+    }
+}
