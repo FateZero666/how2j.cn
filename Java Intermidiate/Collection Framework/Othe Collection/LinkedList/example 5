@@ -1,0 +1,53 @@
+package com.company;
+
+import java.util.LinkedList;
+
+class Hero{
+
+}
+
+interface Stack {
+
+    //把英雄推入到最后位置
+    public void push(Hero h);
+    //把最后一个英雄取出来
+    public Hero pull();
+    //查看最后一个英雄
+    public Hero peek();
+}
+
+class MyStack implements Stack {
+
+    LinkedList<Hero> ll = new LinkedList<Hero>();
+
+    @Override
+    public void push(Hero h) {
+        this.ll.addLast(h);
+    }
+    @Override
+    public Hero pull() {
+        return this.ll.removeLast();
+    }
+    @Override
+    public Hero peek() {
+        return this.ll.getLast();
+    }
+}
+
+
+public class Main {
+
+
+    public static void main(String[] args) {
+        MyStack a = new MyStack();
+
+        for(int i = 0; i < 5; ++i) {
+            a.push(new Hero());
+        }
+
+        for(int i = 0; i < 5; ++i) {
+            System.out.println(a.pull());
+        }
+        
+    }
+}
