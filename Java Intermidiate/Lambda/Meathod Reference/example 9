@@ -35,13 +35,14 @@ public class Main {
     public static void main(String[] args) {
 
 
-        insertFirst(getList(ArrayList::new), "ArrayList");
-        
-        insertFirst(getList(LinkedList::new), "LinkedList");
+        insertFirst(ArrayList::new, "ArrayList");
+
+        insertFirst(LinkedList::new, "LinkedList");
 
     }
 
-    private static void insertFirst(List l, String type) {
+    private static void insertFirst(Supplier<List> s, String type) {
+        List l = getList(s);
         int total = 1000 * 100;
         final int number = 5;
         long start = System.currentTimeMillis();
