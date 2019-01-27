@@ -1,0 +1,105 @@
+package com.company;
+
+import javax.swing.event.ListDataListener;
+import java.util.*;
+
+class Producer extends Thread{
+     private String name;
+
+     public Producer(String name) {
+         this.name = name;
+     }
+
+     public synchronized void push(Stack<Character> s) {
+         int size = s.size();
+         if(size == 200) {
+             try{
+                 this.wait();
+             } catch (InterruptedException e) {
+                 e.printStackTrace();
+             }
+         } else {
+             Random r = new Random(System.currentTimeMillis());
+             char c = (char)('A' + r.nextInt(26));
+             s.push(c);
+             System.out.println(this.name + " 压入: " + c);
+             this.notify();
+         }
+     }
+}
+
+class Consumer extends Thread{
+    private String name;
+
+    public Consumer(String name){
+        this.name = name;
+    }
+
+    public synchronized void pop(Stack<Character> s) {
+        int size = s.size();
+        if(size == 0) {
+            try{
+                this.wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        } else {
+            char c = s.pop();
+            System.out.println(this.name + " 弹出: " + c);
+            this.notify();
+        }
+    }
+}
+
+public class Main {
+
+
+    public static void main(String[] args) {
+
+        Stack<Character> s = new Stack<>();
+        Producer[] p = new Producer[3];
+        Consumer[] c = new Consumer[4];
+        Thread[] t1 = new Thread[3];
+        Thread[] t2 = new Thread[4];
+
+
+        for(int i = 0; i < 3; ++i) {
+            final Producer temp = new Producer("Prodouct"+(i + 1));
+            Thread t = new Thread() {
+                public void run(){
+                    while(true) {
+                        temp.push(s);
+                        try{
+                            Thread.sleep(200);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            };
+            t.start();
+            t1[i] = t;
+            p[i] = temp;
+        }
+
+        for(int i = 0; i < 3; ++i) {
+            final Consumer temp = new Consumer("Consumer"+(i + 1));
+            Thread t = new Thread() {
+                public void run(){
+                    while(true) {
+                        temp.pop(s);
+                        try{
+                            Thread.sleep(400);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            };
+            t.start();
+            t2[i] = t;
+            c[i] = temp;
+        }
+
+    }
+}
