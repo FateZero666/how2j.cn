@@ -1,0 +1,104 @@
+package com.company;
+
+import javax.swing.event.ListDataListener;
+import java.util.*;
+
+class Hero{
+    String name;
+    int hp;
+
+    public Hero(String name) {
+        this.name = name;
+        this.hp = 500;
+    }
+}
+
+class MyStack <T>  {
+
+    List <T> temp = new ArrayList<>();
+    List <T> ll = Collections.synchronizedList(temp);
+
+    public void push(T h) {
+        this.ll.add(h);
+    }
+
+    public T pull() {
+        int size = this.ll.size();
+
+        return this.ll.remove(size - 1);
+    }
+
+    public synchronized T peek() {
+        int size = this.ll.size();
+        return this.ll.get(size - 1);
+    }
+}
+
+
+public class Main {
+
+
+    public static void main(String[] args) {
+        final Hero a = new Hero("a");
+        final Hero b = new Hero("b");
+        final Hero c = new Hero("c");
+
+        Thread t1 = new Thread() {
+            public void run() {
+                synchronized (a) {
+                    System.out.println("t1已经占有a");
+
+                    try{
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    System.out.println("t1 试图占有b、c\n等待中……");
+                }
+                synchronized (b) {
+                    System.out.println("do something with b");
+                }
+            }
+        };
+        t1.start();
+
+        Thread t2 = new Thread() {
+            public void run() {
+                synchronized (b) {
+                    System.out.println("t2已经占有b");
+
+                    try{
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    System.out.println("t2 试图占有a、c\n等待中……");
+                }
+                synchronized (c) {
+                    System.out.println("do something with c");
+                }
+            }
+        };
+        t2.start();
+
+        Thread t3 = new Thread() {
+            public void run() {
+                synchronized (c) {
+                    System.out.println("t3已经占有c");
+
+                    try{
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    System.out.println("t3 试图占有a、b\n等待中……");
+                }
+                synchronized (a) {
+                    System.out.println("do something with a");
+                }
+            }
+        };
+        t3.start();
+
+    }
+}
