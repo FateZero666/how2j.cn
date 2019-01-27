@@ -1,0 +1,199 @@
+package com.company;
+
+import javax.swing.event.ListDataListener;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
+class Hero{
+    String name;
+    int hp;
+
+    public Hero(String name) {
+        this.name = name;
+        this.hp = 500;
+    }
+}
+
+class MyStack <T>  {
+
+    List <T> temp = new ArrayList<>();
+    List <T> ll = Collections.synchronizedList(temp);
+
+    public void push(T h) {
+        this.ll.add(h);
+    }
+
+    public T pull() {
+        int size = this.ll.size();
+
+        return this.ll.remove(size - 1);
+    }
+
+    public synchronized T peek() {
+        int size = this.ll.size();
+        return this.ll.get(size - 1);
+    }
+}
+
+
+public class Main {
+
+    public static String now(){
+        return new SimpleDateFormat("HH:mm:ss").format(new Date());
+    }
+
+    public static void log(String msg){
+        System.out.printf("%s %s %s %n", now(), Thread.currentThread().getName(), msg);
+    }
+
+    public static void main(String[] args) {
+        Lock a = new ReentrantLock();
+        Lock b = new ReentrantLock();
+        Lock c = new ReentrantLock();
+
+        Thread t1 = new Thread() {
+            public void run(){
+                boolean flag = false;
+                try{
+                    log("线程启动");
+                    log("试图占有对象：a");
+                    flag = a.tryLock(1, TimeUnit.SECONDS);
+                    if(flag) {
+                        a.lock();
+                        log("占有对象：a");
+                        log("试图进行5秒业务操做");
+                        Thread.sleep(5000);
+                        flag = b.tryLock(1, TimeUnit.SECONDS);
+                        if(flag) {
+                            b.lock();
+                            log("占有对象：b");
+                            log("试图进行5秒业务操做");
+                            Thread.sleep(5000);
+                            flag = c.tryLock(1, TimeUnit.SECONDS);
+                            if(flag) {
+                                c.lock();
+                                log("占有对象：c");
+                                log("试图进行5秒业务操做");
+                                Thread.sleep(5000);
+                            } else {
+                                log("经过一秒种的努力，还没有占有对象，放弃占有");
+                            }
+                        } else {
+                            log("经过一秒种的努力，还没有占有对象，放弃占有");
+                        }
+                    } else {
+                        log("经过一秒种的努力，还没有占有对象，放弃占有");
+                    }
+                } catch (InterruptedException e){
+                    e.printStackTrace();
+                } finally {
+//                    log("释放对象");
+//                    a.unlock();
+//                    b.unlock();
+//                    c.unlock();
+                }
+//                log("线程结束");
+            }
+        };
+        t1.setName("t1");
+        t1.start();
+
+        Thread t2 = new Thread() {
+            public void run(){
+                boolean flag = false;
+                try{
+                    log("线程启动");
+                    log("试图占有对象：b");
+                    flag = b.tryLock(1, TimeUnit.SECONDS);
+                    if(flag) {
+                        b.lock();
+                        log("占有对象：b");
+                        log("试图进行5秒业务操做");
+                        Thread.sleep(5000);
+                        flag = c.tryLock(1, TimeUnit.SECONDS);
+                        if(flag) {
+                            c.lock();
+                            log("占有对象：c");
+                            log("试图进行5秒业务操做");
+                            Thread.sleep(5000);
+                            flag = a.tryLock(1, TimeUnit.SECONDS);
+                            if(flag) {
+                                a.lock();
+                                log("占有对象：a");
+                                log("试图进行5秒业务操做");
+                                Thread.sleep(5000);
+                            } else {
+                                log("经过一秒种的努力，还没有占有对象，放弃占有");
+                            }
+                        } else {
+                            log("经过一秒种的努力，还没有占有对象，放弃占有");
+                        }
+                    } else {
+                        log("经过一秒种的努力，还没有占有对象，放弃占有");
+                    }
+                } catch (InterruptedException e){
+                    e.printStackTrace();
+                } finally {
+//                    log("释放对象");
+//                    b.unlock();
+//                    c.unlock();
+//                    a.unlock();
+                }
+//                log("线程结束");
+            }
+        };
+        t2.setName("t2");
+        t2.start();
+
+        Thread t3 = new Thread() {
+            public void run(){
+                boolean flag = false;
+                try{
+                    log("线程启动");
+                    log("试图占有对象：c");
+                    flag = c.tryLock(1, TimeUnit.SECONDS);
+                    if(flag) {
+                        c.lock();
+                        log("占有对象：c");
+                        log("试图进行5秒业务操做");
+                        Thread.sleep(5000);
+                        flag = a.tryLock(1, TimeUnit.SECONDS);
+                        if(flag) {
+                            a.lock();
+                            log("占有对象：a");
+                            log("试图进行5秒业务操做");
+                            Thread.sleep(5000);
+                            flag = b.tryLock(1, TimeUnit.SECONDS);
+                            if(flag) {
+                                b.lock();
+                                log("占有对象：b");
+                                log("试图进行5秒业务操做");
+                                Thread.sleep(5000);
+                            } else {
+                                log("经过一秒种的努力，还没有占有对象，放弃占有");
+                            }
+                        } else {
+                            log("经过一秒种的努力，还没有占有对象，放弃占有");
+                        }
+                    } else {
+                        log("经过一秒种的努力，还没有占有对象，放弃占有");
+                    }
+                } catch (InterruptedException e){
+                    e.printStackTrace();
+                } finally {
+//                    log("释放对象");
+//                    c.unlock();
+//                    a.unlock();
+//                    b.unlock();
+                }
+//                log("线程结束");
+            }
+        };
+        t3.setName("t3");
+        t3.start();
+
+    }
+}
