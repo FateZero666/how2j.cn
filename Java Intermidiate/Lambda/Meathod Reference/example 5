@@ -1,0 +1,46 @@
+package com.company;
+
+import java.util.*;
+
+class Hero{
+    public String name;
+    public int hp;
+
+    public Hero(String name, int hp) {
+        this.name = name;
+        this.hp = hp;
+    }
+
+    @Override
+    public String toString() {
+        return this.name + " " + this.hp;
+    }
+
+    public static int compareHero(Hero h1, Hero h2) {
+        if(h1.hp < h2.hp)
+            return 1;
+        else
+            return -1;
+    }
+}
+
+
+public class Main {
+
+
+
+    public static void main(String[] args) {
+
+        Random r = new Random(System.currentTimeMillis());
+
+        TreeSet<Hero> ts = new TreeSet<Hero>((Comparator<? super Hero>) Hero::compareHero);
+
+        for(int i = 0; i < 10; ++i) {
+            ts.add(new Hero("hero" + i, r.nextInt(1000)));
+        }
+
+        System.out.println(ts);
+
+    }
+
+}
