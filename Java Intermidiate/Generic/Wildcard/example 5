@@ -1,0 +1,112 @@
+package com.company;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+
+class Hero{
+    String name;
+    int hp;
+
+    public Hero() {
+
+    }
+
+    public Hero(String name, int hp) {
+        this.name = name;
+        this.hp = hp;
+    }
+
+    @Override
+    public String toString() {
+        return this.name + " " + this.hp;
+    }
+    @Override
+    public int hashCode() {
+        return this.hp;
+    }
+}
+
+class Node <T> {
+    public Node leftNode;
+    public Node rightNode;
+
+    public T value;
+
+    public void add(T v) {
+        if(null == this.value) {
+            value = v;
+        } else {
+            if(v.hashCode() - this.value.hashCode() > 0) {
+                if(this.leftNode == null) {
+                    this.leftNode = new Node();
+                }
+                this.leftNode.add(v);
+            } else {
+                if(this.rightNode == null) {
+                    this.rightNode = new Node();
+                }
+                this.rightNode.add(v);
+            }
+        }
+    }
+
+    public List<T> values(){
+        List<T> values = new ArrayList<>();
+
+        if(null != leftNode) {
+            values.addAll(leftNode.values());
+        }
+
+        values.add(this.value);
+
+        if(null != rightNode) {
+            values.addAll(rightNode.values());
+        }
+
+        return values;
+    }
+}
+
+class ADHero extends Hero{
+
+    public ADHero(String name, int hp) {
+        super(name,hp);
+    }
+
+}
+
+class APHero extends Hero{
+
+    public APHero(String name, int hp) {
+        super(name, hp);
+    }
+
+}
+
+public class Main {
+
+
+    public static void iterate(ArrayList<? extends Hero> list) {
+        for (Hero hero : list) {
+            System.out.println(hero.name + hero.hp);
+        }
+    }
+
+
+    public static void main(String[] args) {
+        ArrayList<Hero> hs = new ArrayList<>();
+        ArrayList<APHero> aphs = new ArrayList<>();
+        ArrayList<ADHero> adhs = new ArrayList<>();
+
+        hs.add(new Hero("hero",100));
+        adhs.add(new ADHero("adhero",200));
+        aphs.add(new APHero("aphero",300));
+
+        iterate(hs);
+        iterate(aphs);
+        iterate(adhs);
+    }
+
+}
