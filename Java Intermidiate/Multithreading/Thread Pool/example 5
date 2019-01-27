@@ -1,0 +1,69 @@
+package com.company;
+
+
+import java.io.*;
+import java.util.Scanner;
+import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+
+
+public class Main {
+
+    public static void judgeFile(String fileName) {
+
+        File f = new File(fileName);
+
+        try(FileReader fr = new FileReader(f)) {
+            int size = (int)f.length();
+            char[] all = new char[size];
+            fr.read(all);
+            String temp = String.valueOf(all);
+            if(temp.contains("Magic")) {
+                System.out.println("找到子目标字符串Magic，在文件：" + fileName);
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public static void judgeFolder(String folderName) {
+
+        File f = new File(folderName);
+        File[] fs = f.listFiles();
+
+        ThreadPoolExecutor threadPool = new ThreadPoolExecutor(10, 15, 60, TimeUnit.SECONDS,
+                new LinkedBlockingDeque<>());
+
+        {
+            int size = fs.length;
+            for(int i = 0; i < size; ++i) {
+                if(fs[i].isFile()) {
+                    String name = fs[i].getName();
+                    if(name.contains(".java")) {
+                        final File temp = fs[i];
+                        threadPool.execute(new Runnable() {
+                            @Override
+                            public void run() {
+                                Main.judgeFile(temp.getAbsolutePath());
+                            }
+                        });
+                    }
+                } else {
+                    Main.judgeFolder(fs[i].getAbsolutePath());
+                }
+            }
+        }
+
+    }
+
+    public static void main(String[] args) {
+
+
+
+        Main.judgeFolder("/Users/saber/text");
+
+    }
+}
