@@ -1,0 +1,83 @@
+package com.company;
+
+import javax.swing.event.ListDataListener;
+import java.util.*;
+
+class Hero{
+    String name;
+    int hp;
+    final int limit = 1000;
+
+    public Hero(String name, int hp) {
+        this.name = name;
+        this.hp = hp;
+    }
+
+    public synchronized void recover() {
+        if(this.hp == this.limit) {
+            try{
+                this.wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+        } else {
+            ++this.hp;
+            this.notify();
+        }
+    }
+
+    public synchronized void hurt() {
+        if(this.hp == 1) {
+            try{
+                this.wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        } else {
+            --this.hp;
+            this.notify();
+        }
+    }
+}
+
+
+public class Main {
+
+
+    public static void main(String[] args) {
+
+        final Hero gareen = new Hero("gareen", 459);
+
+        Thread t1 = new Thread(){
+            public void run() {
+                while(true) {
+                    gareen.hurt();
+                    System.out.printf("t1为%s减血1点，%s的血量是：%d.\n", gareen.name, gareen.name, gareen.hp);
+                    try{
+                        Thread.sleep(2000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        };
+        t1.start();
+
+        Thread t2 = new Thread() {
+            public void run() {
+                while(true) {
+                    gareen.recover();
+                    System.out.printf("t1为%s加血1点，%s的血量是：%d.\n", gareen.name, gareen.name, gareen.hp);
+                    try{
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        };
+        t2.start();
+
+    }
+}
