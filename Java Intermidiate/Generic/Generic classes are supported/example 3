@@ -1,0 +1,88 @@
+package com.company;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+
+class Hero{
+    String name;
+    int hp;
+
+    public Hero(String name, int hp) {
+        this.name = name;
+        this.hp = hp;
+    }
+
+    @Override
+    public String toString() {
+        return this.name + " " + this.hp;
+    }
+    @Override
+    public int hashCode() {
+        return this.hp;
+    }
+}
+
+class Node <T> {
+    public Node leftNode;
+    public Node rightNode;
+
+    public T value;
+
+    public void add(T v) {
+        if(null == this.value) {
+            value = v;
+        } else {
+            if(v.hashCode() - this.value.hashCode() > 0) {
+                if(this.leftNode == null) {
+                    this.leftNode = new Node();
+                }
+                this.leftNode.add(v);
+            } else {
+                if(this.rightNode == null) {
+                    this.rightNode = new Node();
+                }
+                this.rightNode.add(v);
+            }
+        }
+    }
+
+    public List<T> values(){
+        List<T> values = new ArrayList<>();
+
+        if(null != leftNode) {
+            values.addAll(leftNode.values());
+        }
+
+        values.add(this.value);
+
+        if(null != rightNode) {
+            values.addAll(rightNode.values());
+        }
+
+        return values;
+    }
+}
+
+
+public class Main {
+
+
+    public static void main(String[] args) {
+
+        Hero[] h = new Hero[10];
+
+        for(int i = 0; i < 10; ++i) {
+            h[i] = new Hero("hero" + i, (int)(1000 * Math.random()));
+            System.out.println(h[i]);
+        }
+
+
+        Node<Hero> root = new Node();
+        for(Hero each: h) {
+            root.add(each);
+        }
+
+        System.out.println(root.values());
+    }
+}
