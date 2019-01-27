@@ -1,0 +1,103 @@
+package com.company;
+
+import java.util.*;
+
+class Hero implements Comparable<Hero> {
+    String name;
+    int hp;
+
+    public Hero(String name, int hp) {
+        this.name = name;
+        this.hp = hp;
+    }
+
+    @Override
+    public String toString() {
+        return this.name + " " + this.hp;
+    }
+    @Override
+    public int hashCode() {
+        return this.hp;
+    }
+    @Override
+    public int compareTo(Hero another){
+        if(this.hp < another.hp) {
+            return 1;
+        } else {
+            return -1;
+        }
+    }
+}
+
+class Node <T extends Comparable> {
+    public Node leftNode;
+    public Node rightNode;
+
+    public T value;
+
+    public void add(T v) {
+        if(null == this.value) {
+            value = v;
+        } else {
+            if(v.compareTo(this.value) > 0) {
+                if(this.leftNode == null) {
+                    this.leftNode = new Node();
+                }
+                this.leftNode.add(v);
+            } else {
+                if(this.rightNode == null) {
+                    this.rightNode = new Node();
+                }
+                this.rightNode.add(v);
+            }
+        }
+    }
+
+    public List<T> values(){
+        List<T> values = new ArrayList<>();
+
+        if(null != leftNode) {
+            values.addAll(leftNode.values());
+        }
+
+        values.add(this.value);
+
+        if(null != rightNode) {
+            values.addAll(rightNode.values());
+        }
+
+        return values;
+    }
+}
+
+class ADHero extends Hero {
+    public ADHero(String name, int hp) {
+        super(name,hp);
+    }
+}
+
+public class Main {
+
+
+    public static void main(String[] args) {
+
+        Random r =new Random();
+        List<Hero> heros = new ArrayList<Hero>();
+
+        for (int i = 0; i < 10; i++) {
+            //通过随机值实例化hero的hp和damage
+            heros.add(new Hero("hero"+ i, r.nextInt(100)));
+        }
+        System.out.println("初始化后的集合：");
+        System.out.println(heros);
+
+        //直接调用sort会出现编译错误，因为Hero有各种属性
+        //到底按照哪种属性进行比较，Collections也不知道，不确定，所以没法排
+        //Collections.sort(heros);
+
+        //引入Comparator，指定比较的算法
+        Collections.sort(heros,(h1, h2) -> h1.hp >= h2.hp ? 1 : -1);
+        System.out.println("按照血量排序后的集合：");
+        System.out.println(heros);
+    }
+}
