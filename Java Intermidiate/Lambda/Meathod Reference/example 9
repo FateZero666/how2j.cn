@@ -1,0 +1,59 @@
+package com.company;
+
+import java.util.*;
+import java.util.function.Supplier;
+
+class Hero{
+    public String name;
+    public int hp;
+
+    public Hero(){
+
+    }
+
+    public Hero(String name, int hp) {
+        this.name = name;
+        this.hp = hp;
+    }
+
+    @Override
+    public String toString() {
+        return this.name + " " + this.hp;
+    }
+
+    public int compareHero(Hero h1, Hero h2) {
+        if(h1.hp < h2.hp)
+            return 1;
+        else
+            return -1;
+    }
+}
+
+
+public class Main {
+
+    public static void main(String[] args) {
+
+
+        insertFirst(getList(ArrayList::new), "ArrayList");
+        
+        insertFirst(getList(LinkedList::new), "LinkedList");
+
+    }
+
+    private static void insertFirst(List l, String type) {
+        int total = 1000 * 100;
+        final int number = 5;
+        long start = System.currentTimeMillis();
+        for (int i = 0; i < total; i++) {
+            l.add(0, number);
+        }
+        long end = System.currentTimeMillis();
+        System.out.printf("在%s 最前面插入%d条数据，总共耗时 %d 毫秒 %n", type, total, end - start);
+    }
+
+    public static List getList(Supplier<List> s) {
+        return s.get();
+    }
+
+}
