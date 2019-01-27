@@ -1,0 +1,47 @@
+package com.company;
+
+import javax.swing.event.ListDataListener;
+import java.util.*;
+
+class Hero{
+
+}
+
+class MyStack <T>  {
+
+    List <T> temp = new ArrayList<>();
+    List <T> ll = Collections.synchronizedList(temp);
+
+    public void push(T h) {
+        this.ll.add(h);
+    }
+
+    public T pull() {
+        int size = this.ll.size();
+
+        return this.ll.remove(size - 1);
+    }
+
+    public synchronized T peek() {
+        int size = this.ll.size();
+        return this.ll.get(size - 1);
+    }
+}
+
+
+public class Main {
+
+
+    public static void main(String[] args) {
+        MyStack<Hero> a = new MyStack();
+
+        for(int i = 0; i < 5; ++i) {
+            a.push(new Hero());
+        }
+
+        for(int i = 0; i < 5; ++i) {
+            System.out.println(a.pull());
+        }
+
+    }
+}
