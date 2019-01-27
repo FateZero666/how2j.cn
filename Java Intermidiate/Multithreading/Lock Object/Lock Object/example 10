@@ -1,0 +1,129 @@
+package com.company;
+
+import javax.swing.event.ListDataListener;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
+class Producer extends Thread{
+    private String name;
+
+    public Producer(String name) {
+        this.name = name;
+    }
+
+    public boolean push(Stack<Character> s) {
+        int size = s.size();
+        if(size >= 200) {
+            return false;
+        } else {
+            Random r = new Random(System.currentTimeMillis());
+            char c = (char)('A' + r.nextInt(26));
+            s.push(c);
+            System.out.println(this.name + " 压入: " + c);
+            return true;
+        }
+    }
+}
+
+class Consumer extends Thread{
+    private String name;
+
+    public Consumer(String name){
+        this.name = name;
+    }
+
+    public boolean pop(Stack<Character> s) {
+        int size = s.size();
+        if(size == 0) {
+
+            return false;
+
+        } else {
+            char c = s.pop();
+            System.out.println(this.name + " 弹出: " + c);
+            return true;
+        }
+    }
+}
+
+public class Main {
+
+
+    public static void main(String[] args) {
+
+        Stack<Character> s = new Stack<>();
+        Producer[] p = new Producer[3];
+        Consumer[] c = new Consumer[3];
+        Thread[] t1 = new Thread[3];
+        Thread[] t2 = new Thread[3];
+        Lock l = new ReentrantLock();
+        Condition condition = l.newCondition();
+
+        for(int i = 0; i < 3; ++i) {
+            final Producer temp = new Producer("Prodouct"+(i + 1));
+            Thread t = new Thread() {
+                public void run(){
+                    while(true) {
+                        boolean flag = false;
+                        try{
+                            flag = l.tryLock(1, TimeUnit.SECONDS);
+                            if(flag) {
+                                if(temp.push(s)) {
+                                    Thread.sleep(200);
+                                    l.unlock();
+                                    condition.signalAll();
+                                } else {
+                                    l.unlock();
+                                    condition.await();
+                                }
+                            } else {
+                                condition.await();
+                            }
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                }
+            };
+            t.start();
+            t1[i] = t;
+            p[i] = temp;
+        }
+
+        for(int i = 0; i < 3; ++i) {
+            final Consumer temp = new Consumer("Consumer" + (i + 1));
+            Thread t = new Thread() {
+                public void run(){
+                    while(true) {
+                        boolean flag = false;
+                        try{
+                            flag = l.tryLock(1, TimeUnit.SECONDS);
+                            if(flag) {
+                                if(temp.pop(s)) {
+                                    Thread.sleep(200);
+                                    l.unlock();
+                                    condition.signalAll();
+                                } else {
+                                    l.unlock();
+                                    condition.await();
+                                }
+                            } else {
+                                condition.await();
+                            }
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                }
+            };
+            t.start();
+            t2[i] = t;
+            c[i] = temp;
+        }
+    }
+}
