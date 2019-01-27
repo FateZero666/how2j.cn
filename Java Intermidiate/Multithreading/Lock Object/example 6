@@ -1,0 +1,53 @@
+package com.company;
+
+import java.util.LinkedList;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
+class Hero{
+
+}
+
+class MyStack <T>  {
+
+    LinkedList<T> ll = new LinkedList<>();
+    Lock lock = new ReentrantLock();
+
+    public void push(T h) {
+        lock.lock();
+        this.ll.addFirst(h);
+        lock.unlock();
+    }
+
+    public T pop() {
+        lock.lock();
+        T result = this.ll.removeLast();
+        lock.unlock();
+        return result;
+    }
+
+    public T peek() {
+        lock.lock();
+        T result = this.ll.getLast();
+        lock.unlock();
+        return result;
+    }
+}
+
+
+public class Main {
+
+
+    public static void main(String[] args) {
+        MyStack<Hero> a = new MyStack();
+
+        for(int i = 0; i < 5; ++i) {
+            a.push(new Hero());
+        }
+
+        for(int i = 0; i < 5; ++i) {
+            System.out.println(a.pop());
+        }
+
+    }
+}
