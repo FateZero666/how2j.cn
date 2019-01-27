@@ -1,0 +1,93 @@
+package com.company;
+
+import javax.swing.event.ListDataListener;
+import java.util.*;
+
+class Hero{
+    String name;
+    int hp;
+    final int limit = 1000;
+
+    public Hero(String name, int hp) {
+        this.name = name;
+        this.hp = hp;
+    }
+
+    public synchronized void recover(String threadName) {
+        if(this.hp == this.limit) {
+            try{
+                this.wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+        } else {
+            ++this.hp;
+            System.out.printf("%s为%s加血1点，%s的血量是：%d.\n", threadName, this.name, this.name, this.hp);
+            this.notify();
+        }
+    }
+
+    public synchronized void hurt(String threadName) {
+        if(this.hp == 1) {
+            try{
+                this.wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        } else {
+            --this.hp;
+            System.out.printf("%s为%s减血1点，%s的血量是：%d.\n", threadName, this.name, this.name, this.hp);
+            this.notify();
+        }
+    }
+}
+
+
+public class Main {
+
+
+    public static void main(String[] args) {
+
+        final Hero gareen = new Hero("gareen", 459);
+
+        Thread[] down = new Thread[5];
+        Thread[] up = new Thread[2];
+
+        for(int i = 0; i < 5; ++i) {
+            Thread t = new Thread() {
+                public void run() {
+                    while (true) {
+                        gareen.hurt("t1");
+                        //System.out.printf("t1为%s减血1点，%s的血量是：%d.\n", gareen.name, gareen.name, gareen.hp);
+                        try {
+                            Thread.sleep(100);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            };
+            down[i] = t;
+            t.start();
+        }
+
+        for(int i = 0; i < 2; ++i) {
+            Thread t = new Thread() {
+                public void run() {
+                    while(true) {
+                        gareen.recover("t2");
+                        //System.out.printf("t1为%s加血1点，%s的血量是：%d.\n", gareen.name, gareen.name, gareen.hp);
+                        try{
+                            Thread.sleep(10);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            };
+            up[i] = t;
+            t.start();
+        }
+    }
+}
