@@ -1,0 +1,67 @@
+package com.company;
+
+import java.util.*;
+import java.util.function.Supplier;
+
+class Hero{
+    public String name;
+    public int hp;
+    public int damage;
+
+    public Hero(){
+
+    }
+
+    public Hero(String name, int hp, int damage) {
+        this.name = name;
+        this.hp = hp;
+        this.damage = damage;
+    }
+
+    @Override
+    public String toString() {
+        return this.name + " " + this.hp;
+    }
+
+    public int compareHero(Hero h1, Hero h2) {
+        if(h1.hp < h2.hp)
+            return 1;
+        else
+            return -1;
+    }
+}
+
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        Random r = new Random(System.currentTimeMillis());
+        Hero[] heros = new Hero[10];
+        List<Hero> h1 = new ArrayList<>();
+        List<Hero> h2 = new ArrayList<>();
+
+        for(int i = 0; i < 10; ++i) {
+            String name = "hero" + i;
+            int blood = r.nextInt(100) +400;
+            int damage = r.nextInt(100) + 50;
+            heros[i] = new Hero(name, blood, damage);
+            h1.add(new Hero(name, blood, damage));
+            h2.add(new Hero(name, blood, damage));
+        }
+
+        Collections.sort(h1,(a, b) -> a.hp < b.hp ? 1 : -1);
+        System.out.println("hp第三高的英雄是："+h1.get(2).name);
+
+        Hero result = h2
+                        .stream()
+                        .sorted((a, b) -> a.hp < b.hp ? 1 : -1)
+                        .skip(2)
+                        .findFirst()
+                        .get();
+        System.out.println(result.name + " " + result.hp);
+
+    }
+
+
+}
