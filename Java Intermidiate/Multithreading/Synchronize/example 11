@@ -1,0 +1,43 @@
+package com.company;
+
+import java.util.LinkedList;
+
+class Hero{
+
+}
+
+class MyStack <T>  {
+
+    LinkedList<T> ll = new LinkedList<>();
+
+
+    public synchronized void push(T h) {
+        this.ll.addLast(h);
+    }
+
+    public synchronized T pull() {
+        return this.ll.removeLast();
+    }
+
+    public synchronized T peek() {
+        return this.ll.getLast();
+    }
+}
+
+
+public class Main {
+
+
+    public static void main(String[] args) {
+        MyStack<Hero> a = new MyStack();
+
+        for(int i = 0; i < 5; ++i) {
+            a.push(new Hero());
+        }
+
+        for(int i = 0; i < 5; ++i) {
+            System.out.println(a.pull());
+        }
+
+    }
+}
