@@ -1,0 +1,104 @@
+package com.company;
+
+
+import javax.swing.*;
+import javax.swing.plaf.basic.BasicArrowButton;
+import java.awt.event.*;
+import java.io.*;
+
+public class Main {
+
+    public  static int count = 0;
+
+    public static void main(String[] args) {
+
+                JFrame f = new JFrame("LoL");
+
+                f.setSize(800, 600);
+                f.setLocation(100, 100);
+                f.setLayout(null);
+
+
+                JDialog d = new JDialog(f);
+
+                d.setModal(true);
+                d.setTitle("模态的对话框");
+                d.setResizable(false);
+                d.setSize(400, 300);
+                d.setLocation(200, 200);
+
+                JButton b1 = new JButton("打开一个模态窗口");
+
+                b1.setBounds(100, 30, 400, 30);
+                b1.addMouseListener(new MouseListener() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        d.setVisible(true);
+                    }
+
+                    @Override
+                    public void mousePressed(MouseEvent e) {
+
+                    }
+
+                    @Override
+                    public void mouseReleased(MouseEvent e) {
+
+                    }
+
+                    @Override
+                    public void mouseEntered(MouseEvent e) {
+
+                    }
+
+                    @Override
+                    public void mouseExited(MouseEvent e) {
+
+                    }
+                });
+
+                JButton b2 = new JButton("解锁大小");
+
+                b2.setBounds(250, 250, 280, 30);
+                b2.addMouseListener(new MouseListener() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        if(count % 2 == 0){
+                            d.setResizable(true);
+                            b2.setText("锁定大小");
+                        } else {
+                            d.setResizable(false);
+                            b2.setText("解锁大小");
+                        }
+                        ++count;
+                    }
+
+                    @Override
+                    public void mousePressed(MouseEvent e) {
+
+                    }
+
+                    @Override
+                    public void mouseReleased(MouseEvent e) {
+
+                    }
+
+                    @Override
+                    public void mouseEntered(MouseEvent e) {
+
+                    }
+
+                    @Override
+                    public void mouseExited(MouseEvent e) {
+
+                    }
+                });
+
+                f.add(b1);
+                d.add(b2);
+
+                d.setVisible(false);
+                f.setVisible(true);
+    }
+
+}
