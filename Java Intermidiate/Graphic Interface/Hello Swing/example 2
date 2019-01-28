@@ -1,0 +1,59 @@
+package com.company;
+
+
+import javax.swing.*;
+import java.io.*;
+
+public class Main {
+
+    public static void main(String[] args) {
+
+                JFrame jf = new JFrame("LoL");
+                jf.setSize(400, 300);
+                File f = new File("/Users/saber/test/location.txt");
+
+                try (FileInputStream fis = new FileInputStream(f); DataInputStream dis = new DataInputStream(fis);
+                )
+                {
+                   if(f.length() == 0) {
+                       jf.setLocation(200, 200);
+                   } else {
+
+                       int x = dis.readInt();
+                       int y = dis.readInt();
+                       jf.setLocation(x, y);
+                   }
+                   jf.setLayout(null);
+                   jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                   jf.setVisible(true);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                Thread t = new Thread(){
+                    public void run() {
+                        System.out.println("t开始运行了:");
+                        while(true) {
+                            try(FileOutputStream fos = new FileOutputStream(f); DataOutputStream dos = new DataOutputStream(fos)){
+                                int x = jf.getX();
+                                int y = jf.getY();
+                                dos.writeInt(x);
+                                dos.writeInt(y);
+                                System.out.printf("现在位置是（%d, %d）,我休息1000ms：%n", x, y);
+                            } catch(IOException e) {
+                                e.printStackTrace();
+                            }
+
+                            try{
+                                Thread.sleep(1000);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                };
+                t.start();
+
+    }
+
+}
