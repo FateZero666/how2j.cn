@@ -1,0 +1,96 @@
+package com.company;
+
+
+import javax.swing.*;
+import javax.swing.plaf.basic.BasicArrowButton;
+import java.awt.*;
+import java.awt.event.*;
+import java.io.*;
+import java.util.ArrayList;
+
+public class Main {
+
+    public static File[] getFile(File f) {
+          File[] list = f.listFiles();
+          ArrayList<String> l = new ArrayList<>();
+        {
+            int size = list.length;
+            for(int i = 0; i < size; ++i) {
+                String s = list[i].getName();
+                if(s.contains(".java")) {
+                    l.add(s);
+                }
+            }
+        }
+        int size = l.size();
+        File[] result = new File[size];
+        String parentPath = f.getAbsolutePath();
+        for(int i = 0; i < size; ++i) {
+            result[i] = new File(parentPath + "/" + l.get(i));
+        }
+        return result;
+    }
+
+    public static JPanel[] getJPanel(File[] f) {
+        int size = f.length;
+        JPanel[] result = new JPanel[size];
+        JTextArea[] ta = new JTextArea[size];
+
+        for(int i = 0; i < size; ++i) {
+            result[i] = new JPanel();
+            result[i].setBounds(50, 50, 700, 500);
+            ta[i] = new JTextArea();
+            ta[i].setPreferredSize(new Dimension(1150, 550));
+
+            try(InputStream is = new FileInputStream(f[i]);
+                BufferedReader reader = new BufferedReader(new InputStreamReader(is)))
+            {
+                String s = null;
+                while(true) {
+                    s = reader.readLine();
+                    if(s != null) {
+                        ta[i].append(s + "\n");
+                    } else {
+                        break;
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            ta[i].setLineWrap(false);
+            result[i].add(ta[i]);
+            result[i].setVisible(true);
+        }
+
+        return result;
+    }
+
+    public static void main(String[] args) {
+
+                JFrame f = new JFrame("LoL");
+                f.setSize(1200, 600);
+                f.setLocation(200, 200);
+
+                f.setLayout(null);
+
+                File[] fl = Main.getFile(new File("/Users/saber/test/"));
+                JPanel[] jp = Main.getJPanel(fl);
+
+                JTabbedPane tp = new JTabbedPane();
+                ImageIcon ii = new ImageIcon("/Users/saber/test/j.png");
+
+                {
+                    int size = jp.length;
+                    for(int i = 0; i < size; ++i) {
+                        tp.add(jp[i]);
+                        tp.setTitleAt(i, fl[i].getName());
+                        tp.setIconAt(i, ii);
+                    }
+                }
+
+                f.setContentPane(tp);
+                f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                f.setVisible(true);
+    }
+
+}
