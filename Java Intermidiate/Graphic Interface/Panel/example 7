@@ -1,0 +1,96 @@
+package com.company;
+
+
+import javax.swing.*;
+import javax.swing.plaf.basic.BasicArrowButton;
+import java.awt.*;
+import java.awt.event.*;
+import java.io.*;
+
+public class Main {
+
+    public  static int count = 0;
+
+    public static void main(String[] args) {
+
+                JFrame f = new JFrame("LoL");
+                f.setSize(400, 300);
+                f.setLocation(200, 200);
+
+                f.setLayout(null);
+
+                JPanel pleft = new JPanel();
+                pleft.setBounds(50, 50,300, 60);
+                pleft.setBackground(Color.red);
+                pleft.setLayout(new FlowLayout());
+
+                JButton b1 = new JButton("盖伦");
+                JButton b2 = new JButton("提姆");
+                JButton b3 = new JButton("安妮");
+
+                pleft.add(b1);
+                pleft.add(b2);
+                pleft.add(b3);
+
+                JPanel pRight = new JPanel();
+                pRight.setBackground(Color.blue);
+                pRight.setLayout(null);
+
+               final JLabel p1 = new JLabel();
+               final JLabel p2 = new JLabel();
+               final JLabel p3 = new JLabel();
+
+                ImageIcon i1 = new ImageIcon("/Users/saber/test/pics/gareen.jpg");
+                ImageIcon i2 = new ImageIcon("/Users/saber/test/pics/teemo.jpg");
+                ImageIcon i3 = new ImageIcon("/Users/saber/test/pics/annie.jpg");
+                p1.setIcon(i1);
+                p2.setIcon(i2);
+                p3.setIcon(i3);
+
+                pRight.add(p1);
+                pRight.add(p2);
+                pRight.add(p3);
+
+                p1.setBounds(50, 50, i1.getIconWidth(), i1.getIconHeight());
+                p2.setBounds(50, 50, i2.getIconWidth(), i2.getIconHeight());
+                p3.setBounds(50, 50, i3.getIconWidth(), i3.getIconHeight());
+
+
+
+                p1.setVisible(false);
+                p2.setVisible(false);
+                p3.setVisible(true);
+
+                b1.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        p2.setVisible(false);
+                        p3.setVisible(false);
+                        p1.setVisible(true);
+                    }
+                });
+                b2.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        p3.setVisible(false);
+                        p1.setVisible(false);
+                        p2.setVisible(true);
+                    }
+                });
+                b3.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        p1.setVisible(false);
+                        p2.setVisible(false);
+                        p3.setVisible(true);
+                    }
+                });
+
+                JSplitPane sp = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, pleft, pRight);
+                sp.setDividerLocation(80);
+                f.setContentPane(sp);
+                f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                f.setVisible(true);
+    }
+
+}
