@@ -1,0 +1,50 @@
+package com.company;
+
+
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.*;
+
+public class Main {
+
+    public  static int count = 0;
+
+    public static void main(String[] args) {
+
+                JFrame f = new JFrame("LoL");
+                f.setSize(400, 300);
+                f.setLocation(580, 200);
+                f.setLayout(null);
+
+                final JLabel l = new JLabel();
+
+                ImageIcon i = new ImageIcon("/Users/saber/test/shana.png");
+                l.setIcon(i);
+                l.setBounds(50, 50, i.getIconWidth(), i.getIconHeight());
+
+                JButton b = new JButton("隐藏图片");
+                b.setBounds(150, 200, 100, 30);
+                b.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        if(count % 2 == 0){
+                            l.setVisible(false);
+                            b.setText("显示图片");
+                        } else {
+                            l.setVisible(true);
+                            b.setText("隐藏图片");
+                        }
+                        ++count;
+                    }
+                });
+
+                f.add(l);
+                f.add(b);
+                f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+                f.setVisible(true);
+
+    }
+
+}
