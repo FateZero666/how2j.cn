@@ -1,0 +1,72 @@
+package com.company;
+
+
+import javax.swing.*;
+import javax.swing.plaf.basic.BasicArrowButton;
+import java.awt.*;
+import java.awt.event.*;
+import java.io.*;
+import java.net.Inet4Address;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.ArrayList;
+
+public class Main {
+
+
+    public static void main(String[] args) throws UnknownHostException, IOException {
+        InetAddress host = InetAddress.getLocalHost();
+        String ip = host.getHostAddress();
+        System.out.println("本机ip地址：" + ip);
+
+        char[] c = ip.toCharArray();
+        String ipFront = new String();
+        {
+            int size = c.length;
+            int count = 0;
+            for(int i = 0; i < size; ++i) {
+                if(c[i] == '.') {
+                    ++count;
+                }
+                if(count >= 3) {
+                    ipFront = ip.substring(0, (i + 1));
+                    break;
+                }
+            }
+        }
+        System.out.println("ipFron为: " + ipFront);
+
+        ArrayList<String> al = new ArrayList<>();
+        for(int i = 1; i < 255; ++i) {
+            String temp = "ping -c4 " + ipFront + String.valueOf(i);
+            //System.out.println("现在测试的是：" + temp);
+            Process p = Runtime.getRuntime().exec(temp);
+            BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()));
+            String line = null;
+            while((line = br.readLine()) != null) {
+                if(line.length() != 0) {
+                    if(line.contains("0.0% packet loss")){
+                        al.add(temp);
+                        break;
+                    }
+                }
+            }
+            System.out.println("已经完成:" + i + "个ip测试");
+        }
+
+        {
+            int size = al.size();
+            if(size > 0) {
+                System.out.println("如下IP地址可用:");
+                for(int i = 0; i < size; ++i){
+                    System.out.println(al.get(i));
+                }
+                System.out.printf("一共有:%d个地址。", size);
+            } else {
+                System.out.println("没有一个IP地址可用。");
+            }
+        }
+
+    }
+
+}
