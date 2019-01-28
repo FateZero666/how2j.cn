@@ -1,0 +1,58 @@
+package com.company;
+
+
+import javax.swing.*;
+import java.awt.event.*;
+import java.io.*;
+
+public class Main {
+
+    public  static int count = 0;
+
+    public static void main(String[] args) {
+
+                JFrame f = new JFrame("LoL");
+                f.setSize(400, 300);
+                f.setLocation(580, 200);
+                f.setLayout(null);
+
+                final JLabel l = new JLabel();
+
+                ImageIcon i = new ImageIcon("/Users/saber/test/shana.png");
+                l.setIcon(i);
+                l.setBounds(50, 50, i.getIconWidth(), i.getIconHeight());
+
+                f.addKeyListener(new KeyListener() {
+                    @Override
+                    public void keyTyped(KeyEvent e) {
+
+                    }
+
+                    @Override
+                    public void keyPressed(KeyEvent e) {
+
+                    }
+
+                    @Override
+                    public void keyReleased(KeyEvent e) {
+                        int code = e.getKeyCode();
+                        if(code == 38) {
+                            l.setLocation(l.getX(), l.getY() - 10);
+                        } else if(code == 40) {
+                            l.setLocation(l.getX(), l.getY() + 10);
+                        } else if(code == 37) {
+                            l.setLocation(l.getX() - 10, l.getY());
+                        } else if(code == 39) {
+                            l.setLocation(l.getX() + 10, l.getY());
+                        }
+                    }
+                });
+
+                f.add(l);
+                f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+                f.setVisible(true);
+
+    }
+
+}
