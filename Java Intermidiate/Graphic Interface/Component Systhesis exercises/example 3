@@ -1,0 +1,60 @@
+package com.company;
+
+
+import javax.swing.*;
+import javax.swing.plaf.basic.BasicArrowButton;
+import java.awt.*;
+import java.awt.event.*;
+import java.io.*;
+import java.net.*;
+import java.util.ArrayList;
+import java.util.Random;
+import java.util.Scanner;
+
+
+public class Main {
+
+
+
+    public static void main(String[] args){
+
+        JFrame f = new JFrame("LOL");
+        f.setSize(400, 300);
+        f.setLocation(200, 200);
+        f.setLayout(new FlowLayout());
+
+        JTextField jtf = new JTextField();
+        jtf.setPreferredSize(new Dimension(200, 30));
+
+        JButton jb = new JButton("检测");
+
+        f.add(jtf);
+        f.add(jb);
+
+        jb.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String temp = null;
+                temp = jtf.getText();
+                char[] c = temp.toCharArray();
+                {
+                    int size = c.length;
+                    for(int i = 0; i < size; ++i) {
+                        int j = (int)c[i];
+                        if(j < 48 || j > 57) {
+                            JOptionPane.showMessageDialog(f, "输入框内容不是整数");
+                            break;
+                        }
+                    }
+                }
+
+            }
+        });
+
+        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        f.setVisible(true);
+
+
+    }
+
+}
