@@ -1,0 +1,157 @@
+package com.company;
+
+
+import javax.swing.*;
+import javax.swing.plaf.basic.BasicArrowButton;
+import java.awt.*;
+import java.awt.event.*;
+import java.io.*;
+import java.net.*;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.Random;
+import java.util.Scanner;
+
+
+public class Main {
+
+    public static double totalSize = 0;
+    public static double completeSize = 0;
+    public static JProgressBar pb = new JProgressBar();
+    public static int nowpb = 0;
+
+    public static void copyFile(String srcFile, String destFile) {
+
+        File srcf = new File(srcFile);
+        File destf = new File(destFile);
+
+        try(FileReader fr = new FileReader(srcf); FileWriter fw = new FileWriter(destFile)) {
+            char[] all = new char[(int)srcf.length()];
+            fr.read(all);
+            fw.write(all);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public static void copyFolder(String srcFolder, String destFolder){
+
+        File srcf = new File(srcFolder);
+        File[] srcAll = srcf.listFiles();
+
+        File destf = new File(destFolder);
+        String destPath = destf.getAbsolutePath();
+
+        {
+            int size = srcAll.length;
+            for(int i = 0; i < size; ++i) {
+                if(srcAll[i].isFile()) {
+                    String fileName = srcAll[i].getName();
+                    String filePath =   destPath + "/" + fileName;
+                    Main.copyFile(srcAll[i].getAbsolutePath(), filePath);
+                    completeSize += srcAll[i].length();
+                    nowpb = (int)(completeSize / totalSize * 100);
+                    System.out.printf("已经复制了%d%%%n", nowpb);
+                    Main.pb.setValue(nowpb);
+                } else {
+                    String mkdirName = srcAll[i].getName();
+                    String newSrc = srcAll[i].getAbsolutePath();
+                    String newDest = destFolder + "/" + mkdirName;
+                    File temp = new File(newDest);
+                    temp.mkdirs();
+                    Main.copyFolder(newSrc, newDest);
+                }
+            }
+        }
+    }
+
+    public static double totalSize(File f) {
+        if(f.isFile()) {
+            return f.length();
+        } else {
+            File[] fs = f.listFiles();
+            double count = 0;
+            {
+                int size = fs.length;
+                for(int i = 0; i < size; ++i) {
+                    count += totalSize(fs[i]);
+                }
+            }
+            return count;
+        }
+    }
+
+
+    public static void main(String[] args){
+
+        JFrame f = new JFrame("带进度条的文件夹复制");
+        f.setSize(600, 100);
+        f.setLocation(200, 200);
+        f.setLayout(new BorderLayout());
+
+        JPanel p1 = new JPanel();
+        p1.setBounds(50, 50, 300, 50);
+        p1.setLayout(new GridLayout(1, 4));
+        f.add(p1, BorderLayout.NORTH);
+
+        JPanel p2 = new JPanel();
+        p2.setBounds(50, 100, 300, 50);
+        p2.setLayout(new FlowLayout());
+        f.add(p2, BorderLayout.CENTER);
+
+        JLabel l1 = new JLabel("源文件地址：");
+        JLabel l2 = new JLabel("复制到：");
+        JTextField tf1 = new JTextField();
+        JTextField tf2 = new JTextField();
+        p1.add(l1);
+        p1.add(tf1);
+        p1.add(l2);
+        p1.add(tf2);
+
+        JButton b = new JButton("开始复制");
+        JLabel l3 = new JLabel("文件复制进度：");
+
+        pb.setMaximum(100);
+        pb.setValue(0);
+        pb.setVisible(true);
+        p2.add(b);
+        p2.add(l3);
+        p2.add(pb);
+
+        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        f.setVisible(true);
+
+        Thread t = new Thread() {
+            @Override
+            public void run() {
+                while(true) {
+                    pb.setValue(nowpb);
+
+                    try{
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        };
+        t.start();
+
+        b.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String originalAddress = tf1.getText();
+                String destinationAddress = tf2.getText();
+                totalSize = Main.totalSize(new File(originalAddress));
+                completeSize = 0;
+                nowpb = 0;
+                Main.copyFolder(originalAddress, destinationAddress);
+                nowpb = 100;
+            }
+        });
+
+    }
+
+}
