@@ -1,0 +1,59 @@
+package com.company;
+
+
+import javax.swing.*;
+import javax.swing.plaf.basic.BasicArrowButton;
+import java.awt.*;
+import java.awt.event.*;
+import java.io.*;
+import java.net.*;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.Random;
+import java.util.Scanner;
+
+
+public class Main {
+
+
+
+
+    public static void main(String[] args){
+
+        JFrame f = new JFrame("无标题-记事本");
+        f.setSize(400, 300);
+        f.setLocation(200,200);
+        f.setLayout(null);
+
+        JMenuBar mb = new JMenuBar();
+
+        JMenu mFile = new JMenu("文件（F）");
+        JMenu mEdit = new JMenu("编辑（E）");
+        JMenu mFormat = new JMenu("格式（O）");
+        JMenu mView = new JMenu("查看（V）");
+        JMenu mHelp = new JMenu("帮助（H）");
+
+        mFile.add(new JMenuItem("新建（N）      Ctrl+N"));
+        mFile.add(new JMenuItem("打开（O）…     Ctrl+O"));
+        mFile.add(new JMenuItem("保存（S）…     Ctrl+S"));
+        mFile.add(new JMenuItem("另存为（A）…"));
+        mFile.addSeparator();
+        mFile.add(new JMenuItem("页面设置（U）…"));
+        mFile.add(new JMenuItem("打印（P）…     Ctrl+P"));
+        mFile.addSeparator();
+        mFile.add(new JMenuItem("退出（X）"));
+
+        mb.add(mFile);
+        mb.add(mEdit);
+        mb.add(mFormat);
+        mb.add(mView);
+        mb.add(mHelp);
+
+        f.setJMenuBar(mb);
+        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        f.setVisible(true);
+
+    }
+
+}
