@@ -7,6 +7,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.net.*;
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Random;
@@ -113,9 +114,9 @@ public class Main {
                 long tm = (long) totalMoney;
                 long ti = tm - tp;
 
-                tf5.setText(NumberFormat.getCurrencyInstance().format(tp).substring(1));
-                tf6.setText(NumberFormat.getCurrencyInstance().format(ti).substring(1));
-                tf7.setText(NumberFormat.getCurrencyInstance().format(tm).substring(1));
+                tf5.setText(DecimalFormat.getNumberInstance().format(tp));
+                tf6.setText(DecimalFormat.getNumberInstance().format(ti));
+                tf7.setText(DecimalFormat.getNumberInstance().format(tm));
             }
         });
 
@@ -127,4 +128,5 @@ public class Main {
         f.setVisible(true);
     }
 
+}
 }
