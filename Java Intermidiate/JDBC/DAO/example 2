@@ -1,0 +1,190 @@
+package com.company;
+
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Scanner;
+
+class Item {
+    //增加id属性
+    public int id;
+    public String name;
+    public int price;
+
+}
+
+interface DAO{
+    public void add(Item item);
+    public void update(Item item);
+    public void delete(int id);
+    public Item get(int id);
+    public List<Item> list();
+    public List<Item> list(int start, int end);
+}
+
+class ItemDAO implements DAO {
+
+    public ItemDAO() {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Connection getConnection() throws SQLException {
+        return DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/how2java?characterEncoding=UTF-8",
+                "root", "12131415");
+    }
+
+    public int getTotal() {
+        int total = 0;
+        try (Connection c = getConnection(); Statement s = c.createStatement();){
+            String sql = "select count(*) from item";
+            ResultSet rs = s.executeQuery(sql);
+            while(rs.next()) {
+                total = rs.getInt(1);
+            }
+            System.out.println("total:" + total);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return total;
+    }
+
+    public void add(Item item) {
+        String sql = "insert into item values(null, ?, ?)";
+        try (Connection c = getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
+            ps.setString(1, item.name);
+            ps.setInt(2, item.price);
+            ps.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void update(Item item) {
+        String sql = "update item set name = ?, price = ? where id = ?";
+
+        try (Connection c = getConnection(); PreparedStatement ps = c.prepareStatement(sql)) {
+            ps.setString(1, item.name);
+            ps.setInt(2, item.price);
+            ps.setInt(3, item.id);
+            ps.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void delete(int id) {
+        try(Connection c = getConnection(); Statement s = c.createStatement();) {
+            String sql = "delete from item where id = " + id;
+            s.execute(sql);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    @Override
+    public Item get(int id) {
+        Item item = new Item();
+        try (Connection c = getConnection(); Statement s = c.createStatement();){
+            String sql = "select * from item where id = " + id;
+            ResultSet rs = s.executeQuery(sql);
+            if(rs.next()) {
+                item.id = id;
+                item.name = rs.getString(2);
+                item.price = rs.getInt(3);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return item;
+    }
+    @Override
+    public List<Item> list() {
+        return list(0, Short.MAX_VALUE);
+    }
+    @Override
+    public List<Item> list(int start, int count) {
+        List<Item> items = new ArrayList<>();
+
+        String sql = "select * from item order by id limit ?, ?";
+
+        try (Connection c = getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
+            ps.setInt(1, start);
+            ps.setInt(2, count);
+
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()) {
+                Item item = new Item();
+                item.id = rs.getInt(1);
+                item.name = rs.getString(2);
+                item.price = rs.getInt(3);
+                items.add(item);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return items;
+    }
+}
+
+public class Main {
+
+
+
+    public static void main(String[] args) throws ClassNotFoundException, SQLException {
+
+            ItemDAO idao = new ItemDAO();
+            idao.getConnection();
+
+            for(int i = 0; i < 100; ++i) {
+                Item item = new Item();
+                item.name = "item" + i;
+                item.price = 500;
+                //idao.add(item);
+            }
+        {
+            Item item = new Item();
+            item.name = "圣剑";
+            item.price = 1;
+            item.id = 1;
+            idao.update(item);
+        }
+
+            idao.delete(3);
+        {
+            Item item = null;
+            item = idao.get(1);
+            System.out.println("获得物品："+ item.id + item.name + item.price);
+        }
+
+        List<Item> items = idao.list();
+
+        {
+            items = idao.list();
+            int size = items.size();
+            System.out.println("总共有" + idao.getTotal() + "个数据");
+            System.out.printf("%s\t%s\t%s%n", "id", "name", "price");
+            for(int i = 0; i < size; ++i) {
+                System.out.printf("%d\t%s\t%d%n",items.get(i).id, items.get(i).name, items.get(i).price);
+            }
+        }
+
+        items = idao.list(10, 5);
+
+        {
+            items = idao.list(10, 5);
+            int size = items.size();
+            System.out.printf("%n%n%s\t%s\t%s%n", "id", "name", "price");
+            for(int i = 0; i < size; ++i) {
+                System.out.printf("%d\t%s\t%d%n",items.get(i).id, items.get(i).name, items.get(i).price);
+            }
+        }
+
+    }
+
+}
