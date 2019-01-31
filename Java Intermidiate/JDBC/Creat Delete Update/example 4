@@ -1,0 +1,46 @@
+package com.company;
+
+
+import java.sql.*;
+
+public class Main {
+
+    public Connection c;
+    public Statement s;
+
+    public Main() {
+        try{
+            Class.forName("com.mysql.jdbc.Driver");
+            c = DriverManager.getConnection("jdbc:mysql://127.0.0.1/how2java?characterEncoding=UTF-8",
+                    "root", "12131415");
+            s = c.createStatement();
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void execute(String sql) {
+        try {
+            if(sql != null)
+                s.execute(sql);
+            else
+                System.out.println("命令异常");
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public static void main(String[] args) throws ClassNotFoundException, SQLException {
+
+        Main m = new Main();
+        String sql = "insert into hero values(null," + "'提姆'," + 300.0f + "," + 60 + ")";
+        m.execute(sql);
+        sql = "update hero set name = 'name 5' where id = 3";
+        m.execute(sql);
+        sql = "delete from hero where id = 5";
+        m.execute(sql);
+
+    }
+
+}
