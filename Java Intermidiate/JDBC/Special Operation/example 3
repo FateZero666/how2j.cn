@@ -1,0 +1,73 @@
+package com.company;
+
+
+import java.sql.*;
+
+public class Main {
+
+    public static Connection c;
+    public static Statement s;
+    public static PreparedStatement ps;
+
+    public static void init() {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            c = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/how2java?characterEncoding=UTF-8",
+                    "root", "12131415");
+            s = c.createStatement();
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void List(int start, int count) {
+        try {
+            String sql = "select * from hero limit " + start + "," + count;
+            s.execute(sql);
+            ResultSet rs = s.getResultSet();
+            while(rs.next()) {
+                int id = rs.getInt(1);
+                String name = rs.getString("name");
+                float hp = rs.getFloat(3);
+                int damage = rs.getInt("damage");
+                System.out.printf("%d\t%s\t%f\t%d%n", id, name, hp, damage);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void addDelete(String name, float hp, int damage) {
+        String sql = "insert into hero values (null, ?, ?, ?)";
+        try (PreparedStatement ps = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS); ) {
+            ps.setString(1, name);
+            ps.setFloat(2, hp);
+            ps.setInt(3, damage);
+            ps.execute();
+            ResultSet rs = ps.getGeneratedKeys();
+            if(rs.next()) {
+                int id = rs.getInt(1);
+                do{
+                    sql = "delete from hero where id = " + (--id);
+                }while(s.executeUpdate(sql) != 1);
+                if(id > -1)
+                    System.out.println("成功删除id:" + id);
+                else
+                    System.out.println("未找到可以删除的数据");
+            } else {
+                System.out.println("自动生成ID，失败");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void main(String[] args) throws ClassNotFoundException, SQLException {
+
+        Main.init();
+        Main.addDelete("盖伦", 515.0f, 77);
+
+    }
+
+}
