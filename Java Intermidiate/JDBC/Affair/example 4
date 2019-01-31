@@ -1,0 +1,134 @@
+package com.company;
+
+
+import java.sql.*;
+import java.util.Scanner;
+
+public class Main {
+
+    public static Connection c;
+    public static Statement s;
+    public static PreparedStatement ps;
+
+    public static void init() {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            c = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/how2java?characterEncoding=UTF-8",
+                    "root", "12131415");
+            s = c.createStatement();
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void initData() {
+        try {
+            String sql = "insert into hero values (null, ?, ?, ?)";
+            ps = c.prepareStatement(sql);
+            for(int i = 0; i < 100; ++i) {
+                ps.setString(1,"英雄" + i);
+                ps.setFloat(2, 555.0f);
+                ps.setInt(3, 66);
+                ps.execute();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void List(int start, int count) {
+        try {
+            String sql = "select * from hero limit " + start + "," + count;
+            s.execute(sql);
+            ResultSet rs = s.getResultSet();
+            while(rs.next()) {
+                int id = rs.getInt(1);
+                String name = rs.getString("name");
+                float hp = rs.getFloat(3);
+                int damage = rs.getInt("damage");
+                System.out.printf("%d\t%s\t%f\t%d%n", id, name, hp, damage);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void addDelete(String name, float hp, int damage) {
+        String sql = "insert into hero values (null, ?, ?, ?)";
+        try (PreparedStatement ps = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS); ) {
+            ps.setString(1, name);
+            ps.setFloat(2, hp);
+            ps.setInt(3, damage);
+            ps.execute();
+            ResultSet rs = ps.getGeneratedKeys();
+            if(rs.next()) {
+                int id = rs.getInt(1);
+                do{
+                    sql = "delete from hero where id = " + (--id);
+                }while(s.executeUpdate(sql) != 1);
+                if(id > -1)
+                    System.out.println("成功删除id:" + id);
+                else
+                    System.out.println("未找到可以删除的数据");
+            } else {
+                System.out.println("自动生成ID，失败");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void deleteTen(int start) {
+        int[] delete = new int[10];
+        try {
+            c.setAutoCommit(false);
+
+            for(int i = 0; i < 10; ++i) {
+                String sql = "select * from hero where name = '英雄" + (start + i) + "'";
+                ResultSet rs = s.executeQuery(sql);
+                if(rs.next())
+                    delete[i] = rs.getInt("id");
+                System.out.printf("试图删除id = %d的数据%n", delete[i]);
+            }
+            System.out.println("是否要删除数据（Y/N)");
+            Scanner scan = new Scanner(System.in);
+            String str = scan.next();
+            if(str.contains("Y")) {
+                System.out.println("提交删除");
+                for(int i = 0; i < 10; ++i) {
+                    String sql = "delete from hero where id = " + delete[i];
+                    s.execute(sql);
+                }
+            } else {
+                System.out.println("你选了不删除");
+            }
+            c.commit();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public static void end() {
+        try {
+            if(s != null) {
+                s.close();
+            }
+            if(c != null) {
+                c.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void main(String[] args) throws ClassNotFoundException, SQLException {
+
+        Main.init();
+        Main.deleteTen(20);
+        Main.end();
+    }
+
+}
