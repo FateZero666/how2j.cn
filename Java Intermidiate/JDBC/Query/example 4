@@ -1,0 +1,56 @@
+package com.company;
+
+
+import java.sql.*;
+
+public class Main {
+
+    public static Connection c;
+    public static Statement s;
+
+    public static void init () {
+        try{
+            Class.forName("com.mysql.jdbc.Driver");
+            c = DriverManager.getConnection("jdbc:mysql://127.0.0.1/how2java?characterEncoding=UTF-8",
+                    "root", "12131415");
+            s = c.createStatement();
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void execute(String sql) {
+        try {
+            if(sql != null)
+                s.execute(sql);
+            else
+                System.out.println("命令异常");
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void list(int start, int count) throws SQLException {
+        String sql =  "select * from hero limit " + start + "," + count;
+
+        ResultSet rs = s.executeQuery(sql);
+        while(rs.next()) {
+            int id = rs.getInt("id");
+            String name = rs.getString(2);
+            float hp = rs.getFloat("hp");
+            int damage = rs.getInt(4);
+            System.out.printf("%d\t%s\t%f\t%d%n", id, name, hp, damage);
+        }
+
+    }
+
+    public static void main(String[] args) throws ClassNotFoundException, SQLException {
+
+        Main.init();
+        Main.list(10, 5);
+
+
+
+    }
+
+}
