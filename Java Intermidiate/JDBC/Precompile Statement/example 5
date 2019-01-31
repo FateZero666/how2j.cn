@@ -1,0 +1,49 @@
+package com.company;
+
+
+import java.sql.*;
+
+public class Main {
+
+
+
+    public static void main(String[] args) throws ClassNotFoundException, SQLException {
+
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        String sql = "insert into hero values(null, ?, ?, ?)";
+
+        try (Connection c = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/how2java?" +
+                "characterEncoding=UTF-8", "root", "12131415");
+            Statement s = c.createStatement(); PreparedStatement ps = c.prepareStatement(sql);
+            )
+        {
+            long begin = System.nanoTime();
+            for(int i = 0; i < 10000; ++i) {
+                String sql2 = "insert into hero values (null," + "'提姆'" + "," + 313.0f + "," + 50 + ")";
+                s.execute(sql2);
+            }
+            s.close();
+            long end = System.nanoTime();
+            System.out.println("使用Statement总共用时：" + (end - begin));
+
+            begin = System.nanoTime();
+            for(int i = 0 ; i < 10000; ++i) {
+                ps.setString(1, "提姆");
+                ps.setFloat(2, 313f);
+                ps.setInt(3, 50);
+                ps.execute();
+            }
+            end = System.nanoTime();
+            System.out.println("使用PreparedStatement总共用时：" + (end - begin));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+}
