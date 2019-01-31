@@ -1,0 +1,133 @@
+package com.company;
+
+
+import java.nio.channels.ConnectionPendingException;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Scanner;
+
+class Item {
+    //增加id属性
+    public int id;
+    public String name;
+    public int price;
+
+}
+
+class ConnectionPool {
+    List<Connection> cs = new ArrayList<Connection>();
+
+    int size;
+
+    public ConnectionPool(int size) {
+        this.size = size;
+        init();
+    }
+
+    public void init() {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            for(int i = 0; i < size; ++i) {
+                Connection c = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/how2java?characterEncoding=UTF-8",
+                        "root", "12131415");
+                cs.add(c);
+            }
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public synchronized Connection getConnection() {
+        while(cs.isEmpty()) {
+            try {
+                this.wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        Connection c = cs.remove(0);
+        return c;
+    }
+
+    public synchronized void returnConnection(Connection c) {
+        cs.add(c);
+        this.notifyAll();
+    }
+}
+
+class WorkingThread extends Thread {
+    private ConnectionPool cp;
+
+    public WorkingThread (String name ,ConnectionPool cp) {
+        super(name);
+        this.cp = cp;
+    }
+
+    public void run() {
+        Connection c = cp.getConnection();
+        System.out.println(this.getName() + "\t获得了根连接，并开始工作");
+        try(Statement st = c.createStatement()) {
+            Thread.sleep(1000);
+            st.execute("insert into item values(null , '代达罗斯之殇', 5500)");
+        } catch (InterruptedException | SQLException e) {
+            e.printStackTrace();
+        }
+        cp.returnConnection(c);
+    }
+}
+
+class RubbishThread extends Thread {
+    private Connection c;
+
+    public RubbishThread (String name) {
+        super(name);
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            this.c = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/how2java?characterEncoding=UTF-8",
+                    "root", "12131415");
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void run() {
+        System.out.println(this.getName() + "\t获得了根连接，并开始工作");
+        try(Statement s = c.createStatement()) {
+            Thread.sleep(1000);
+            s.execute("insert into item values(null, '代达罗斯之殇', 5500)");
+        } catch (InterruptedException | SQLException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+public class Main {
+
+
+
+    public static void main(String[] args) throws ClassNotFoundException, SQLException {
+
+        long begin1 = System.nanoTime();
+        for(int i = 0; i < 100; ++i) {
+            new RubbishThread("rubbish thread" + i).start();
+        }
+        long end1 = System.nanoTime();
+
+
+        ConnectionPool cp = new ConnectionPool(10);
+        long begin2 = System.nanoTime();
+        for(int i = 0; i < 100; ++i) {
+            new WorkingThread("working thread" + i, cp).start();
+        }
+        long end2 = System.nanoTime();
+        System.out.println("第一次总用时：" + (end1 - begin1));
+        System.out.println("第二次总用时：" + (end2 - begin2));
+
+    }
+
+}
