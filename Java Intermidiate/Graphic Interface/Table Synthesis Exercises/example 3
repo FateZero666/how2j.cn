@@ -1,0 +1,340 @@
+package com.company;
+
+
+import javax.sql.rowset.serial.SerialException;
+import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.table.AbstractTableModel;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.*;
+import java.util.ArrayList;
+
+class Hero {
+    //增加id属性
+    public int id;
+    public String name;
+    public float hp;
+    public int damage;
+
+}
+
+interface DAO {
+    //增加
+    public void add(Hero hero);
+    //修改
+    public void update(Hero hero);
+    //删除
+    public void delete(int id);
+    //获取
+    public Hero get(int id);
+    //查询
+    public ArrayList<Hero> list();
+    //分页查询
+    public ArrayList<Hero> list(int start, int count);
+}
+
+class HeroDAO implements DAO {
+
+    public HeroDAO() {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Connection getConnection() throws SQLException {
+        return DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/how2java?characterEncoding=UTF-8", "root",
+                "12131415");
+    }
+
+    public int getTotal() {
+        int total = 0;
+        try (Connection c = getConnection(); Statement s = c.createStatement();) {
+
+            String sql = "select count(*) from hero";
+
+            ResultSet rs = s.executeQuery(sql);
+            while (rs.next()) {
+                total = rs.getInt(1);
+            }
+
+            System.out.println("total:" + total);
+
+        } catch (SQLException e) {
+
+            e.printStackTrace();
+        }
+        return total;
+    }
+
+    public void add(Hero hero) {
+
+        String sql = "insert into hero values(null,?,?,?)";
+        try (Connection c = getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
+
+            ps.setString(1, hero.name);
+            ps.setFloat(2, hero.hp);
+            ps.setInt(3, hero.damage);
+
+            ps.execute();
+
+            ResultSet rs = ps.getGeneratedKeys();
+            if (rs.next()) {
+                int id = rs.getInt(1);
+                hero.id = id;
+            }
+        } catch (SQLException e) {
+
+            e.printStackTrace();
+        }
+    }
+
+    public void update(Hero hero) {
+
+        String sql = "update hero set name= ?, hp = ? , damage = ? where id = ?";
+        try (Connection c = getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
+
+            ps.setString(1, hero.name);
+            ps.setFloat(2, hero.hp);
+            ps.setInt(3, hero.damage);
+            ps.setInt(4, hero.id);
+
+            ps.execute();
+
+        } catch (SQLException e) {
+
+            e.printStackTrace();
+        }
+
+    }
+
+    public void delete(int id) {
+
+        try (Connection c = getConnection(); Statement s = c.createStatement();) {
+
+            String sql = "delete from hero where id = " + id;
+
+            s.execute(sql);
+
+        } catch (SQLException e) {
+
+            e.printStackTrace();
+        }
+    }
+
+    public Hero get(int id) {
+        Hero hero = null;
+
+        try (Connection c = getConnection(); Statement s = c.createStatement();) {
+
+            String sql = "select * from hero where id = " + id;
+
+            ResultSet rs = s.executeQuery(sql);
+
+            if (rs.next()) {
+                hero = new Hero();
+                String name = rs.getString(2);
+                float hp = rs.getFloat("hp");
+                int damage = rs.getInt(4);
+                hero.name = name;
+                hero.hp = hp;
+                hero.damage = damage;
+                hero.id = id;
+            }
+
+        } catch (SQLException e) {
+
+            e.printStackTrace();
+        }
+        return hero;
+    }
+
+    public ArrayList<Hero> list() {
+        return list(0, Short.MAX_VALUE);
+    }
+
+    public ArrayList<Hero> list(int start, int count) {
+        ArrayList<Hero> heros = new ArrayList<Hero>();
+
+        String sql = "select * from hero order by id desc limit ?,? ";
+
+        try (Connection c = getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
+
+            ps.setInt(1, start);
+            ps.setInt(2, count);
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Hero hero = new Hero();
+                int id = rs.getInt(1);
+                String name = rs.getString(2);
+                float hp = rs.getFloat("hp");
+                int damage = rs.getInt(4);
+                hero.id = id;
+                hero.name = name;
+                hero.hp = hp;
+                hero.damage = damage;
+                heros.add(hero);
+            }
+        } catch (SQLException e) {
+
+            e.printStackTrace();
+        }
+        return heros;
+    }
+
+}
+
+class HeroTabelModel extends AbstractTableModel {
+    String[] columnNames = new String[] {"id", "name", "hp", "damage"};
+
+    public ArrayList<Hero> heros = new HeroDAO().list();
+
+    public int getRowCount() {
+        return heros.size();
+    }
+
+    public int getColumnCount() {
+        return columnNames.length;
+    }
+
+    public String getColumnName(int columnIndex) {
+        return columnNames[columnIndex];
+    }
+
+    public boolean isCellEditable(int rowIndex, int columnIndex) {
+        return false;
+    }
+
+    public Object getValueAt(int rowIndex, int columnIndex) {
+        Hero h = heros.get(rowIndex);
+        if(0 == columnIndex) {
+            return h.id;
+        } else if(1 == columnIndex) {
+            return h.name;
+        } else if(2 == columnIndex) {
+            return h.hp;
+        } else if(3 == columnIndex) {
+            return h.damage;
+        } else {
+            return null;
+        }
+    }
+}
+
+public class Main {
+
+
+
+    public static void main(String[] args) {
+
+        JFrame f = new JFrame("LOL");
+        f.setSize(400, 300);
+        f.setLocation(200, 200);
+        f.setLayout(new BorderLayout());
+
+        HeroTabelModel htm = new HeroTabelModel();
+        JTable t = new JTable(htm);
+        JScrollPane sp = new JScrollPane(t);
+
+        JButton bAdd = new JButton("增加");
+        bAdd.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JDialog dAdd = new JDialog();
+                dAdd.setSize(200, 150);
+                dAdd.setLocation(300, 300);
+                dAdd.setLayout(new BorderLayout());
+                dAdd.setVisible(true);
+
+                JPanel p1 = new JPanel();
+                p1.setBounds(20, 20, 160, 40);
+                p1.setLayout(new GridLayout(2, 2));
+                JLabel l1 = new JLabel("        名称");
+                JTextField tf1 = new JTextField();
+                p1.add(l1);
+                p1.add(tf1);
+                JLabel l2 = new JLabel("        血量");
+                JTextField tf2 = new JTextField();
+                p1.add(l2);
+                p1.add(tf2);
+
+                JPanel p3 = new JPanel();
+                p3.setBounds(20, 100, 160, 30);
+                p3.setLayout(new FlowLayout());
+                JButton bSend = new JButton("提交");
+                p3.add(bSend);
+
+                dAdd.add(p1, BorderLayout.NORTH);
+                dAdd.add(p3, BorderLayout.SOUTH);
+
+                bSend.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        String name = tf1.getText();
+                        int hp = Integer.valueOf(tf2.getText());
+                        Hero temp = new Hero();
+                        temp.name = name;
+                        temp.hp = hp;
+                        temp.damage = 77;
+                        HeroDAO hdao = new HeroDAO();
+
+                        hdao.add(temp);
+                        htm.heros = hdao.list();
+                        t.updateUI();
+
+                        JOptionPane.showMessageDialog(dAdd, "提交成功");
+                        dAdd.setVisible(false);
+
+                    }
+                });
+
+            }
+        });
+
+        JButton bDelete = new JButton("删除");
+
+        t.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+        bDelete.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int row = t.getSelectedRow();
+                if(row == -1) {
+                    JOptionPane.showMessageDialog(f, "删除前应该选中一行");
+                } else {
+                    int judge = JOptionPane.showConfirmDialog(f,"确认要删除？");
+                    if(judge == 0) {
+                        Hero temp = htm.heros.get(row);
+                        HeroDAO hdao = new HeroDAO();
+                        hdao.delete(temp.id);
+                        htm.heros = hdao.list();
+                        t.updateUI();
+                        t.getSelectionModel().setSelectionInterval(0, 0);
+                    } else {
+                        JOptionPane.showMessageDialog(f,"你取消了删除操作");
+                    }
+                }
+
+            }
+        });
+
+
+        JPanel pSouth = new JPanel();
+        pSouth.setLayout(new FlowLayout());
+        pSouth.add(bAdd);
+        pSouth.add(bDelete);
+
+        f.add(sp, BorderLayout.CENTER);
+        f.add(pSouth, BorderLayout.SOUTH);
+        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        f.setVisible(true);
+
+
+    }
+
+}
