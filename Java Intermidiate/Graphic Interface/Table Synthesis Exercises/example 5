@@ -95,12 +95,12 @@ class HeroDAO implements DAO {
 
     public void update(Hero hero) {
 
-        String sql = "update hero set hp = ? , damage = ? where name = ?";
+        String sql = "update hero set name = ? , hp = ? , damage = ? where id = ?";
         try (Connection c = getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
-
-            ps.setFloat(1, hero.hp);
-            ps.setInt(2, hero.damage);
-            ps.setString(3, hero.name);
+            ps.setString(1, hero.name);
+            ps.setFloat(2, hero.hp);
+            ps.setInt(3, hero.damage);
+            ps.setInt(4, hero.id);
 
             ps.execute();
 
@@ -210,6 +210,10 @@ class HeroTabelModel extends AbstractTableModel {
         return false;
     }
 
+    public Object getValueAt (int rowIndex) {
+        return heros.get(rowIndex);
+    }
+
     public Object getValueAt(int rowIndex, int columnIndex) {
         Hero h = heros.get(rowIndex);
         if(0 == columnIndex) {
@@ -289,7 +293,12 @@ public class Main {
         bUpdate.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new UpdateDialog(f).setVisible(true);
+                int index = t.getSelectedRow();
+                if(-1 == index) {
+                    JOptionPane.showMessageDialog(f, "编辑前请选中一行数据");
+                } else {
+                    new UpdateDialog(f, index).setVisible(true);
+                }
             }
         });
 
@@ -312,11 +321,16 @@ public class Main {
 
         JButton bSubmit = new JButton("提交");
 
-        UpdateDialog(JFrame f) {
+        UpdateDialog(JFrame f, int selectRow) {
             super(f);
             this.setModal(true);
             int gap = 50;
             this.setLayout(null);
+
+            final Hero h = (Hero)htm.getValueAt(selectRow);
+
+            tfName.setText(h.name);
+            tfHp.setText(String.valueOf(h.hp));
 
             JPanel pInput = new JPanel();
             JPanel pSubmit = new JPanel();
@@ -346,18 +360,16 @@ public class Main {
                             String name = tfName.getText();
                             int hp = Integer.valueOf(tfHp.getText());
 
-                            Hero h = new Hero();
                             h.name = name;
                             h.hp = hp;
 
                             new HeroDAO().update(h);
 
-                            JOptionPane.showMessageDialog(f, "修改成功");
+                            JOptionPane.showMessageDialog(f, "提交成功");
                             UpdateDialog.this.setVisible(false);
                             updateTable();
                         }
                     }
-
                 }
             });
         }
