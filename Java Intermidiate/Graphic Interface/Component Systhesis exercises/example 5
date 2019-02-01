@@ -1,0 +1,79 @@
+package com.company;
+
+
+import javax.sql.rowset.serial.SerialException;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.*;
+
+public class Main {
+
+
+
+    public static void main(String[] args) {
+
+        JFrame f = new JFrame("LOL");
+        f.setSize(400, 300);
+        f.setLocation(200, 200);
+        f.setLayout(new BorderLayout());
+
+        JLabel lAccountNumber = new JLabel("账号：");
+        JLabel lPassword = new JLabel("密码：");
+        JTextField tfAccountNumber = new JTextField();
+        tfAccountNumber.setPreferredSize(new Dimension(75, 25));
+        JTextField tfPassword = new JTextField();
+        tfPassword.setPreferredSize(new Dimension(75, 25));
+
+        JPanel north = new JPanel();
+        north.setBounds(50, 50, 300, 50);
+        north.setLayout(new FlowLayout());
+
+        north.add(lAccountNumber);
+        north.add(tfAccountNumber);
+        north.add(lPassword);
+        north.add(tfPassword);
+
+
+        JButton bSignIn = new JButton("登录");
+        JPanel center = new JPanel();
+        center.setBounds(50, 100, 300, 50);
+        center.setLayout(new FlowLayout());
+
+        center.add(bSignIn);
+
+        bSignIn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String sAccountNumber = tfAccountNumber.getText();
+                String sPassword = tfPassword.getText();
+                try {
+                    Class.forName("com.mysql.jdbc.Driver");
+                } catch (ClassNotFoundException ee) {
+                    ee.printStackTrace();
+                }
+
+                try (Connection c = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/how2java?characterEncoding=UTF-8",
+                        "root", "12131415"); Statement s = c.createStatement();) {
+                    String sql = "select * from user where name = '" + sAccountNumber + "' and password = '" + sPassword + "'";
+                    ResultSet rs = s.executeQuery(sql);
+                    if (rs.next()) {
+                        JOptionPane.showMessageDialog(f, "成功登陆");
+                    } else {
+                        JOptionPane.showMessageDialog(f, "账号或密码错误，登陆失败");
+                    }
+                } catch (SQLException ee) {
+                    ee.printStackTrace();
+                }
+            }
+        });
+
+        f.add(north, BorderLayout.NORTH);
+        f.add(center, BorderLayout.CENTER);
+        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        f.setVisible(true);
+
+    }
+
+}
