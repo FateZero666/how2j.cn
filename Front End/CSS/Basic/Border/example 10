@@ -1,0 +1,18 @@
+<style>
+div.toprightbottom{
+width:0px;
+height:0px;
+border-top-style:solid;
+border-top-color:red;
+border-top-width: 20px;
+border-left-style:solid;
+border-left-color:white;
+border-left-width: 20px;  
+border-right-style:solid;
+border-right-color:white;
+border-right-width: 20px;     
+background-color:lightgray;  
+}
+</style>
+<div class="toprightbottom">
+</div>
