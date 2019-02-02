@@ -1,0 +1,68 @@
+<style>
+table{
+ border-collapse:collapse;
+}
+td{
+    width:25%;
+    text-align:center;
+}
+tr#tr1{
+     background-color:dcdcdc;
+     border-top-style:solid;
+     border-top-color:#a9a9a9;
+     border-top-width:2px;
+     border-bottom-style:solid;
+     border-bottom-color:#a9a9a9;
+     border-bottom-width:1px;
+}
+tr#tr2{
+     background-color:dcdcdc;
+     border-top-style:solid;
+     border-top-color:#a9a9a9;
+     border-top-width:1px;
+     border-bottom-style:solid;
+     border-bottom-color:#a9a9a9;
+     border-bottom-width:1px;
+}
+tr#tr3{
+     border-bottom-style:solid;
+     border-bottom-color:#a9a9a9;
+     border-bottom-width:1px;
+}
+</style>
+<table width="800px">
+	<tr>
+	    <td>id</td>
+	    <td>名称</td>
+	    <td>血量</td>
+	    <td>伤害</td>
+	</tr>
+
+	<tr id="tr1">
+	    <td>1</td>
+	    <td>gareen</td>
+	    <td>340</td>
+	    <td>58</td>
+	</tr>
+
+	<tr>
+	    <td>2</td>
+	    <td>teemo</td>
+	    <td>320</td>
+	    <td>76</td>
+	</tr>
+
+	<tr id="tr2">
+	    <td>3</td>
+	    <td>annie</td>
+	    <td>380</td>
+	    <td>400</td>
+	</tr>
+
+	<tr id="tr3">
+	    <td>4</td>
+	    <td>deadbrother</td>
+	    <td>400</td>
+	    <td>90</td>
+	</tr>
+</table>
