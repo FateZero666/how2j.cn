@@ -6,27 +6,30 @@ td{
     width:25%;
     text-align:center;
 }
+tr{
+ height:35px;
+}
 tr#tr1{
-     background-color:dcdcdc;
+     background-color:f8f8f8;
      border-top-style:solid;
-     border-top-color:#a9a9a9;
+     border-top-color:lightgray;
      border-top-width:2px;
      border-bottom-style:solid;
-     border-bottom-color:#a9a9a9;
+     border-bottom-color:lightgray;
      border-bottom-width:1px;
 }
 tr#tr2{
-     background-color:dcdcdc;
+     background-color:f8f8f8;
      border-top-style:solid;
-     border-top-color:#a9a9a9;
+     border-top-color:lightgray;
      border-top-width:1px;
      border-bottom-style:solid;
-     border-bottom-color:#a9a9a9;
+     border-bottom-color:lightgray;
      border-bottom-width:1px;
 }
 tr#tr3{
      border-bottom-style:solid;
-     border-bottom-color:#a9a9a9;
+     border-bottom-color:lightgray;
      border-bottom-width:1px;
 }
 </style>
