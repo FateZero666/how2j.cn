@@ -1,0 +1,262 @@
+package com.company;
+
+import jdk.net.Sockets;
+
+import javax.sql.rowset.serial.SerialException;
+import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.table.AbstractTableModel;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.*;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.net.UnknownHostException;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Scanner;
+
+interface DAO {
+    //增加
+    public void add(Android android);
+
+    //修改
+    public void update(Android android);
+
+    //删除
+    public void delete(int id);
+
+    //获取
+    public Android get(int id);
+
+    //查询
+    public ArrayList<Android> list();
+
+    //分页查询
+    public ArrayList<Android> list(int start, int count);
+}
+
+class Android {
+    int id;
+    String receive;
+    String response;
+}
+
+class AndroidDAO implements DAO{
+
+    public AndroidDAO() {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Connection getConnection() throws SQLException {
+        return DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/how2java?characterEncoding=UTF-8", "root", "12131415");
+    }
+
+    public int getTotal() {
+        int total = 0;
+
+        try (Connection c = getConnection(); Statement s = c.createStatement()) {
+            String sql = "select count(*) from android";
+            ResultSet rs = s.executeQuery(sql);
+            while(rs.next()) {
+                total = rs.getInt(1);
+            }
+            System.out.println("total:" + total);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return total;
+    }
+    @Override
+    public void add(Android android) {
+        String sql = "insert into android values(null, ?, ?)";
+
+        try(Connection c = getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
+            ps.setString(1, android.receive);
+            ps.setString(2, android.response);
+            ps.execute();
+            //下面步骤很关键，可以把自动生成的add返回给送进来的实例
+            ResultSet rs = ps.getGeneratedKeys();
+            if(rs.next()) {
+                int id = rs.getInt(1);
+                android.id = id;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    @Override
+    public void update(Android android) {
+        String sql = "update android set receive = ?, response = ? where id = ?";
+
+        try(Connection c = getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
+            ps.setString(1, android.receive);
+            ps.setString(2, android.response);
+            ps.setInt(3, android.id);
+
+            ps.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    @Override
+    public void delete(int id) {
+        try(Connection c = getConnection(); Statement s = c.createStatement();) {
+            String sql = "delete from android where id =" + id;
+            s.execute(sql);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    @Override
+    public Android get(int id) {
+        Android android = null;
+        try(Connection c = getConnection(); Statement s = c.createStatement();) {
+            String sql = "select * from android where id =" + id;
+            ResultSet rs = s.executeQuery(sql);
+
+            if(rs.next()) {
+                android = new Android();
+                android.receive = rs.getString(2);
+                android.response = rs.getString(3);
+                android.id = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return android;
+    }
+
+    public Android get(String receive) {
+        Android android = null;
+        try(Connection c = getConnection(); Statement s = c.createStatement();) {
+            String sql = "select * from android where receive = '" + receive + "'";
+            ResultSet rs = s.executeQuery(sql);
+
+            if(rs.next()) {
+                android = new Android();
+                android.receive = rs.getString(2);
+                android.response = rs.getString(3);
+                android.id = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return android;
+    }
+    @Override
+    public ArrayList<Android> list() {
+        return list(0, Short.MAX_VALUE);
+    }
+    @Override
+    public ArrayList<Android> list(int start, int count) {
+        ArrayList<Android> androids = new ArrayList<Android>();
+
+        String sql = "select * from android order by id desc limit ?, ?";
+        try(Connection c = getConnection(); PreparedStatement ps = c.prepareStatement(sql)) {
+            ps.setInt(1, start);
+            ps.setInt(2, count);
+
+            ResultSet rs = ps.executeQuery(sql);
+
+            while(rs.next()) {
+                Android android = new Android();
+                android.id = rs.getInt(1);
+                android.receive = rs.getString(2);
+                android.response = rs.getString(3);
+                androids.add(android);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return androids;
+    }
+}
+
+class RecieveThread extends Thread {
+
+    private Socket s;
+
+    public RecieveThread(Socket s) {
+        this.s = s;
+    }
+
+    public void run() {
+        try {
+            InputStream is = s.getInputStream();
+            DataInputStream dis = new DataInputStream(is);
+
+            while(true) {
+                String msg = dis.readUTF();
+                Android android = new AndroidDAO().get(msg);
+                if(android != null)
+                    System.out.println(android.response);
+                else
+                    System.out.println("我竟无言以对");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+class SendThread extends Thread {
+
+    private Socket s;
+
+    public SendThread(Socket s) {
+        this.s = s;
+    }
+
+    public void run() {
+        try {
+            OutputStream os = s.getOutputStream();
+            DataOutputStream dos = new DataOutputStream(os);
+
+            while(true) {
+                Scanner sc = new Scanner(System.in);
+                String str = sc.next();
+                dos.writeUTF(str);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+public class Main {
+
+
+
+    public static void main(String[] args) {
+        try{
+
+            ServerSocket ss = new ServerSocket(9999);
+            System.out.println("监听在端口号：9999");
+
+            Socket sSend = new Socket("127.0.0.1", 9999);
+            System.out.println("发送到端口号：9999");
+            new SendThread(sSend).start();
+
+
+            Socket sRecieve = ss.accept();
+            new RecieveThread(sRecieve).start();
+
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+
+}
