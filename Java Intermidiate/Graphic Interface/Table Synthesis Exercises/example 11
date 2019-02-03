@@ -1,0 +1,587 @@
+package com.company;
+
+import javax.swing.*;
+import javax.swing.table.AbstractTableModel;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.*;
+import java.util.ArrayList;
+
+class Hero {
+    //增加id属性
+    public int id;
+    public String name;
+    public float hp;
+    public int damage;
+
+}
+
+interface DAO {
+    //增加
+    public void add(Hero hero);
+    //修改
+    public void update(Hero hero);
+    //删除
+    public void delete(int id);
+    //获取
+    public Hero get(int id);
+    //查询
+    public ArrayList<Hero> list();
+    //分页查询
+    public ArrayList<Hero> list(int start, int count);
+}
+
+class HeroDAO implements DAO {
+
+    public HeroDAO() {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Connection getConnection() throws SQLException {
+        return DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/how2java?characterEncoding=UTF-8", "root",
+                "12131415");
+    }
+
+    public int getTotal() {
+        int total = 0;
+        try (Connection c = getConnection(); Statement s = c.createStatement();) {
+
+            String sql = "select count(*) from hero";
+
+            ResultSet rs = s.executeQuery(sql);
+            while (rs.next()) {
+                total = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+
+            e.printStackTrace();
+        }
+        return total;
+    }
+
+    public void add(Hero hero) {
+
+        String sql = "insert into hero values(null,?,?,?)";
+        try (Connection c = getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
+
+            ps.setString(1, hero.name);
+            ps.setFloat(2, hero.hp);
+            ps.setInt(3, hero.damage);
+
+            ps.execute();
+
+            ResultSet rs = ps.getGeneratedKeys();
+            if (rs.next()) {
+                int id = rs.getInt(1);
+                hero.id = id;
+            }
+        } catch (SQLException e) {
+
+            e.printStackTrace();
+        }
+    }
+
+    public void update(Hero hero) {
+
+        String sql = "update hero set name = ? , hp = ? , damage = ? where id = ?";
+        try (Connection c = getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
+            ps.setString(1, hero.name);
+            ps.setFloat(2, hero.hp);
+            ps.setInt(3, hero.damage);
+            ps.setInt(4, hero.id);
+
+            ps.execute();
+
+        } catch (SQLException e) {
+
+            e.printStackTrace();
+        }
+
+    }
+
+    public void delete(int id) {
+
+        try (Connection c = getConnection(); Statement s = c.createStatement();) {
+
+            String sql = "delete from hero where id = " + id;
+
+            s.execute(sql);
+
+        } catch (SQLException e) {
+
+            e.printStackTrace();
+        }
+    }
+
+    public Hero get(int id) {
+        Hero hero = null;
+
+        try (Connection c = getConnection(); Statement s = c.createStatement();) {
+
+            String sql = "select * from hero where id = " + id;
+
+            ResultSet rs = s.executeQuery(sql);
+
+            if (rs.next()) {
+                hero = new Hero();
+                String name = rs.getString(2);
+                float hp = rs.getFloat("hp");
+                int damage = rs.getInt(4);
+                hero.name = name;
+                hero.hp = hp;
+                hero.damage = damage;
+                hero.id = id;
+            }
+
+        } catch (SQLException e) {
+
+            e.printStackTrace();
+        }
+        return hero;
+    }
+
+    public ArrayList<Hero> list() {
+        return list(0, Short.MAX_VALUE);
+    }
+
+    public ArrayList<Hero> list(int start, int count) {
+        ArrayList<Hero> heros = new ArrayList<Hero>();
+
+        String sql = "select * from hero order by id desc limit ?,? ";
+
+        try (Connection c = getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
+
+            ps.setInt(1, start);
+            ps.setInt(2, count);
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Hero hero = new Hero();
+                int id = rs.getInt(1);
+                String name = rs.getString(2);
+                float hp = rs.getFloat("hp");
+                int damage = rs.getInt(4);
+                hero.id = id;
+                hero.name = name;
+                hero.hp = hp;
+                hero.damage = damage;
+                heros.add(hero);
+            }
+        } catch (SQLException e) {
+
+            e.printStackTrace();
+        }
+        return heros;
+    }
+
+}
+
+class HeroTabelModel extends AbstractTableModel {
+    String[] columnNames = new String[] {"id", "name", "hp", "damage"};
+
+    public ArrayList<Hero> heros = new HeroDAO().list();
+
+    public int getRowCount() {
+        return heros.size();
+    }
+
+    public int getColumnCount() {
+        return columnNames.length;
+    }
+
+    public String getColumnName(int columnIndex) {
+        return columnNames[columnIndex];
+    }
+
+    public boolean isCellEditable(int rowIndex, int columnIndex) {
+        return false;
+    }
+
+    public Object getValueAt (int rowIndex) {
+        return heros.get(rowIndex);
+    }
+
+    public Object getValueAt(int rowIndex, int columnIndex) {
+        Hero h = heros.get(rowIndex);
+        if(0 == columnIndex) {
+            return h.id;
+        } else if(1 == columnIndex) {
+            return h.name;
+        } else if(2 == columnIndex) {
+            return h.hp;
+        } else if(3 == columnIndex) {
+            return h.damage;
+        } else {
+            return null;
+        }
+    }
+}
+
+public class Main {
+
+    static HeroTabelModel htm = new HeroTabelModel();
+    static JTable t = new JTable(htm);
+
+    static JButton bFirst = new JButton("首页");
+    static JButton bPre = new JButton("上一页");
+    static JButton bnext = new JButton("下一页");
+    static JButton bLast = new JButton("末页");
+
+    static JComboBox<Integer> cb = new JComboBox<>();
+    static boolean cbListener = true;
+
+    static int start = 0;
+    static int number = 10;
+
+    public static void main(String[] args) {
+
+        final JFrame f = new JFrame("LOL");
+        f.setSize(500, 300);
+        f.setLocation(200, 200);
+        f.setLayout(null);
+
+        t.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+        t.getSelectionModel().setSelectionInterval(0, 0);
+
+        JPanel pOperation = new JPanel();
+        pOperation.setLayout(new FlowLayout());
+        pOperation.setBounds(0, 200, 500, 30);
+
+        JButton bAdd = new JButton("增加");
+        JButton bDelete = new JButton("删除");
+        JButton bUpdate = new JButton("编辑");
+        pOperation.add(bAdd);
+        pOperation.add(bDelete);
+        pOperation.add(bUpdate);
+
+        JPanel pPage = new JPanel();
+        pPage.setLayout(new FlowLayout());
+        pPage.setBounds(0, 240, 500, 30);
+
+        bAdd.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new AddDialog(f).setVisible(true);
+            }
+        });
+
+        bDelete.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //判断是否选中
+                int index = t.getSelectedRow();
+                if(-1==index){
+                    JOptionPane.showMessageDialog(f, "删除前需要先选中一行");
+                    return;
+                }
+                //进行确认是否要删除
+                if(JOptionPane.OK_OPTION != JOptionPane.showConfirmDialog(f, "确认要删除？"))
+                    return;
+                //获取id
+                Hero hero = htm.heros.get(index);
+                int id =hero.id;
+                //删除
+                new HeroDAO().delete(id);
+                //更新table
+                updateTable();
+            }
+        });
+
+        cb.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(cbListener == false) {
+                    return;
+                }
+                start = ((int)cb.getSelectedItem() - 1) * number;
+                updateButton();
+                updateTable();
+            }
+        });
+
+        bUpdate.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int index = t.getSelectedRow();
+                if(-1 == index) {
+                    JOptionPane.showMessageDialog(f, "编辑前请选中一行数据");
+                } else {
+                    new UpdateDialog(f, index).setVisible(true);
+                }
+            }
+        });
+
+        initButton();
+
+        pPage.add(bFirst);
+        pPage.add(bPre);
+        pPage.add(cb);
+        pPage.add(bnext);
+        pPage.add(bLast);
+
+        JScrollPane sp = new JScrollPane(t);
+        sp.setBounds(0, 0, 500, 200);
+
+        f.add(sp);
+        f.add(pOperation);
+        f.add(pPage);
+
+        updateTable();
+        updateButton();
+
+        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        f.setVisible(true);
+    }
+
+    static class UpdateDialog extends JDialog {
+        JLabel lName = new JLabel("名称");
+        JLabel lHp = new JLabel("血量");
+
+        JTextField tfName = new JTextField();
+        JTextField tfHp = new JTextField();
+
+        JButton bSubmit = new JButton("提交");
+
+        UpdateDialog(JFrame f, int selectRow) {
+            super(f);
+            this.setModal(true);
+            int gap = 50;
+            this.setLayout(null);
+
+            final Hero h = (Hero)htm.getValueAt(selectRow);
+
+            tfName.setText(h.name);
+            tfHp.setText(String.valueOf(h.hp));
+
+            JPanel pInput = new JPanel();
+            JPanel pSubmit = new JPanel();
+
+            pInput.setLayout(new GridLayout(2, 2, gap, gap));
+            pInput.add(lName);
+            pInput.add(tfName);
+            pInput.add(lHp);
+            pInput.add(tfHp);
+
+            pSubmit.add(bSubmit);
+
+            pInput.setBounds(50, 20, 200, 100);
+            pSubmit.setBounds(0, 130, 300, 150);
+
+            this.add(pInput);
+            this.add(pSubmit);
+
+            this.setSize(300, 200);
+            this.setLocationRelativeTo(f);
+
+            bSubmit.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    if(checkEmpty(tfName, "名称")) {
+                        if(checkNumber(tfHp, "hp")) {
+                            String name = tfName.getText();
+                            int hp = Integer.valueOf(tfHp.getText());
+
+                            h.name = name;
+                            h.hp = hp;
+
+                            new HeroDAO().update(h);
+
+                            JOptionPane.showMessageDialog(f, "提交成功");
+                            UpdateDialog.this.setVisible(false);
+                            updateTable();
+                        }
+                    }
+                }
+            });
+        }
+    }
+
+    static class AddDialog extends JDialog {
+        JLabel lName = new JLabel("名称");
+        JLabel lHp = new JLabel("血量");
+
+        JTextField tfName =new JTextField();
+        JTextField tfHp =new JTextField();
+
+        JButton bSubmit =new JButton("提交");
+
+        AddDialog(JFrame f){
+            super(f);
+            this.setModal(true);
+            int gap = 50;
+            this.setLayout(null);
+
+            JPanel pInput= new JPanel();
+            JPanel pSubmit= new JPanel();
+
+            pInput.setLayout(new GridLayout(2, 2,gap,gap));
+            pInput.add(lName);
+            pInput.add(tfName);
+            pInput.add(lHp);
+            pInput.add(tfHp);
+
+            pSubmit.add(bSubmit);
+
+            pInput.setBounds(50,20,200,100);
+            pSubmit.setBounds(0,130,300,150);
+
+            this.add(pInput);
+            this.add(pSubmit);
+
+            this.setSize(300, 200);
+            this.setLocationRelativeTo(f);
+            bSubmit.addActionListener(new ActionListener(){
+
+                @Override
+                public void actionPerformed(ActionEvent e) {
+
+                    if(checkEmpty(tfName, "名称")){
+                        if(checkNumber(tfHp, "hp")){
+
+                            String name = tfName.getText();
+                            int hp = Integer.parseInt(tfHp.getText());
+
+                            Hero h = new Hero();
+                            h.name = name;
+                            h.hp = hp;
+
+                            new HeroDAO().add(h);
+                            int total = new HeroDAO().getTotal();
+
+                            JOptionPane.showMessageDialog(f, "提交成功 ");
+
+                            AddDialog.this.setVisible(false);
+                            updateTable();
+                        }
+                    }
+                }
+            });
+        }
+    }
+
+    public static void initButton() {
+
+        bFirst.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                start = 0;
+                updateButton();
+                updateTable();
+            }
+        });
+
+        bPre.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                start -= number;
+                updateButton();
+                updateTable();
+            }
+        });
+
+        bnext.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                start += number;
+                updateButton();
+                updateTable();
+            }
+        });
+
+        bLast.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                start = Last();
+                updateButton();
+                updateTable();
+            }
+        });
+    }
+
+    public static void updateButton() {
+        int last = Last();
+        if(start == 0) {
+            bFirst.setEnabled(false);
+            bPre.setEnabled(false);
+        }
+        if(start == last) {
+            bnext.setEnabled(false);
+            bLast.setEnabled(false);
+        }
+        if(start != 0) {
+            bFirst.setEnabled(true);
+            bPre.setEnabled(true);
+        }
+        if(start < last) {
+            bnext.setEnabled(true);
+            bLast.setEnabled(true);
+        }
+        int pageNumber = last/number + 1;
+        cbListener = false;
+        cb.removeAllItems();
+        for(int i = 0; i < pageNumber; ++i) {
+            cb.addItem(i + 1);
+        }
+        cbListener = true;
+
+        int currentPage = start/number + 1;
+        cb.setSelectedItem(currentPage);
+    }
+
+    public static void updateTable(){
+        htm.heros = new HeroDAO().list(start, number);
+        t.updateUI();
+        if(!htm.heros.isEmpty())
+            t.getSelectionModel().setSelectionInterval(0, 0);
+    }
+
+    public static int Last() {
+        int total = new HeroDAO().getTotal();
+        int last = 0;
+
+        if(total % number == 0) {
+            last = total - number;
+        } else {
+            last = total - total % number;
+        }
+
+        return last;
+    }
+
+    private static boolean checkEmpty(JTextField tf, String msg) {
+        String value = tf.getText();
+        if(0==value.length()){
+            JOptionPane.showMessageDialog(null,msg + " 不能为空");
+            tf.grabFocus();
+            return false;
+        }
+        return true;
+    }
+
+    private static boolean checkNumber(JTextField tf, String msg) {
+        String value = tf.getText();
+        if(0==value.length()){
+            JOptionPane.showMessageDialog(null,msg + " 不能为空");
+            tf.grabFocus();
+            return false;
+        }
+        try {
+            Integer.parseInt(value);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null,msg + " 只能是整数");
+            tf.grabFocus();
+            return false;
+        }
+
+        return true;
+    }
+
+}
