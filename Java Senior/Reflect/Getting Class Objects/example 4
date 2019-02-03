@@ -1,0 +1,64 @@
+package com.company;
+
+
+class Hero {
+    public String name;
+    public float hp;
+    public int damage;
+    public int id;
+
+    static String copyright;
+
+    static synchronized String getCopyright() {
+        System.out.println("初始化 copyright");
+        copyright = "版权由Riot Games公司所有";
+        return copyright;
+    }
+
+}
+
+public class Main {
+
+
+    public static void main(String[] args) {
+
+        String className = "com.company.Hero";
+
+        Thread t1 = new Thread() {
+            public void run() {
+                Main.method1();
+            }
+        };
+        t1.start();
+
+        Thread t2 = new Thread() {
+            public void run() {
+                Main.method2();
+            }
+        };
+        t2.start();
+
+    }
+
+    static void method1() {
+        synchronized (com.company.Main.class) {
+            try {
+                System.out.println(Thread.currentThread().getName() + "进入了method1方法运行5秒");
+                Thread.sleep(5000);
+                System.out.println(Thread.currentThread().getName() + "结束method1方法运行");
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    static  synchronized void method2() {
+            try {
+                System.out.println(Thread.currentThread().getName() + "进入了method2方法运行5秒");
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+    }
+
+}
