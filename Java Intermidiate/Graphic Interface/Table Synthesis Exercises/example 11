@@ -269,6 +269,7 @@ public class Main {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new AddDialog(f).setVisible(true);
+                updateButton();
             }
         });
 
@@ -292,6 +293,7 @@ public class Main {
                 new HeroDAO().delete(id);
                 //更新table
                 updateTable();
+                updateButton();
             }
         });
 
