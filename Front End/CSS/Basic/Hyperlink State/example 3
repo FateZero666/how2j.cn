@@ -1,0 +1,37 @@
+<style>
+span#color{
+color:blue;
+front-size:80%;
+}
+div#box{
+border:1px solid lightgray;
+
+width:70px;
+padding:0px;
+margin:0px;
+
+margin-left:80px;
+
+color:#989898;
+line-height:250%;
+font-size:90%;
+text-align:center;
+
+}
+div#inbox{
+white-space:pre;
+}
+div#inbox:hover{
+cursor:pointer;
+background:#f0f0f0;
+white-space:pre;
+}
+
+</style>
+<span id="color">武器 护甲 英雄</span>
+<div id="box">
+<div id="inbox">盖伦	  </div>
+<div id="inbox">提姆	  </div>
+<div id="inbox">安妮	  </div>
+<div id="inbox">死歌	  </div>
+</div>
