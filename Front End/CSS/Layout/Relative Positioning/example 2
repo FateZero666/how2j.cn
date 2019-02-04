@@ -1,0 +1,18 @@
+<style>
+div.r{
+  position: relative;
+  left:0;
+  top:0;
+}
+div.abs{
+ position:absolute;
+ left: 150px;
+ top:0px;
+}
+</style>
+  
+<p >正常文字1</p>
+<p >正常文字2</p>
+<div class="r"><div class="abs">相对定位的文字3</div></div>
+<p >正常文字4</p>
+<p >正常文字5</p>
