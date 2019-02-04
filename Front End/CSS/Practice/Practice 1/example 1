@@ -8,7 +8,7 @@ float:right;
 
 a{
 text-decoration:none;
-color:mediumblue;
+color:#336699;
 }
 
 div{
@@ -76,7 +76,7 @@ float:left;
 
 span#s0{
 font-weight:bold;
-padding-left:27px;
+padding-left:15px;
 }
 span#s1{
 font-size:80%;
@@ -108,7 +108,7 @@ margin-right:10px
 </div>
 
 <div id="d4">
-<div id="contain"><div id="d9">6551</div></div>
+<span style="background-image:url(/Users/saber/Program/TextEdit/img/5.png); padding:3px; float:left; font-size=50%">6551</span>
 <span ><span id="s0">Vincent Fu,</span> Materials Science, PhD</span>
 </div>
 
@@ -123,3 +123,4 @@ margin-right:10px
 
 <div id="d8">
 </div>
+
