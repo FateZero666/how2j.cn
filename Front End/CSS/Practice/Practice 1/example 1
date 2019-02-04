@@ -1,0 +1,125 @@
+<style>
+.fl{
+float:left;
+}
+.fr{
+float:right;
+}
+
+a{
+text-decoration:none;
+color:mediumblue;
+}
+
+div{
+font-family:宋体;
+font-size:100%;
+}
+div#d0{
+padding-bottom:10px;
+border-bottom-style:solid;        
+border-bottom-color:lightgray;
+border-bottom-width:1px;
+}
+div#d1{
+padding-top:10px;
+padding-bottom:10px;
+}
+div#d2{
+padding-top:1px;
+padding-bottom:1px;
+font-size:80%;
+}
+div#d3{
+padding-top:1px;
+padding-bottom:1px;
+font-size:80%;
+font-weight:bold;
+}
+div#d4{
+padding-top:0px;
+padding-bottom:10px;
+}
+div#d5{
+margin-left:60px;
+margin-bottom:20px;
+}
+div#d6{
+margin-right:10px;
+}
+div#d7{
+margin-left:60px;
+margin-bottom:20px;
+color:lightgray;
+font-size:80%;
+font-family:"Times New Roman";
+white-space:pre;
+}
+div#d8{
+padding-bottom:0px;
+border-bottom-style:solid;        
+border-bottom-color:lightgray;
+border-bottom-width:1px;
+}
+div#d9{
+padding-top:3px;
+padding-left:5px;
+font-size:80%;
+}
+div#contain{
+background-image:url(/Users/saber/Program/TextEdit/img/5.png);
+background-size:contain;
+width:40px;
+height:25px;
+float:left;
+}
+
+span#s0{
+font-weight:bold;
+padding-left:27px;
+}
+span#s1{
+font-size:80%;
+padding-left:0px;
+}
+
+img#i0{
+margin-right:20px;
+}
+img#i1{
+float:left;
+margin-right:20px
+}
+img#i2{
+float:left;
+margin-right:10px
+}
+</style>
+
+<div id="d0">
+<span><img src="/Users/saber/Program/TextEdit/img/1.png"> 最新动态</span>
+<span class="fr"><img src="/Users/saber/Program/TextEdit/img/2.png"> <span>设置</span>
+</div>
+
+<div id="d1">
+<img  id="i0" class="fl" src="/Users/saber/Program/TextEdit/img/4.png">
+<div id="d2">热门回答，来自 机械 <a href=".......">关注话题</a><img class="fr" src="/Users/saber/Program/TextEdit/img/3.png"></div>
+<div id="d3"><a href="......">人类史上令人叹为观止的极限精度制造成果有哪些？</a></div>
+</div>
+
+<div id="d4">
+<div id="contain"><div id="d9">6551</div></div>
+<span ><span id="s0">Vincent Fu,</span> Materials Science, PhD</span>
+</div>
+
+<div id="d5">
+<img id="i2" src="/Users/saber/Program/TextEdit/img/6.png">
+<div id="d6">说到精度，就不得不提在材料学中最重要的一个方面：表征。要研究一种材料性能，握在手里把玩是远远不够的，就算你拿出放大镜离近了看，也只能看到表面的一些坑坑洼洼，而为了知晓一种材料的纤维结构，科学家至少要下到纳米级（放大千倍），如果要获得更深…<a href="......">显示全部</a></div>
+</div>
+
+<div id="d7">
+<img src="/Users/saber/Program/TextEdit/img/7.png">  关注问题  <img src="/Users/saber/Program/TextEdit/img/8.png">  867条评论  <img src="/Users/saber/Program/TextEdit/img/9.png">  作者保留权利 
+</div>
+
+<div id="d8">
+</div>
