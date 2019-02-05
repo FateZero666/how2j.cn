@@ -1,0 +1,116 @@
+<html>
+
+<style>
+body{
+font-family:微软雅黑;
+font-size:10px;
+}
+
+div.dleft{
+float:left;
+}
+div.dred{
+color:red;
+}
+
+input{
+background-color:lightgray;
+width:130px;
+height:25px;
+type:text;
+}
+
+span.sbold{
+font-weight:bold;
+}
+span.snormal{
+font-weight:normal;
+}
+span.sred{
+color:red;
+}
+
+table{
+border-bottom-style:solid;
+border-bottom-color:blue;
+border-bottom-width:2px;
+}
+
+td{
+font-size:10px;
+line-height:20px;
+}
+td#tdleft{
+width:18%;
+text-align:right;
+}
+td#tdcenter{
+width:27%;
+text-align:center;
+}
+td#tdright{
+width:55%;
+text-align:left;
+background-color:lightgray;
+padding:5;
+}
+</style>
+
+
+<body>
+<div style="width:550px;height:450px;padding:3">
+
+
+<div class="dred">请注意：带有”*“的项目必须填写。</div>
+
+<div style="border-style:solid;border-color:blue;border-width:1px;padding:2px">
+
+<div>
+<div style="background-color:skyblue; color:blue; font-weight:bold;">请填写您的用户名：</div>
+</div>
+
+<table>
+ <tr>
+  <td id="tdleft"><span class="sred">*</span>通行证用户名：</div></td>
+  <td id="tdcenter"><input value="请输入用户名"></br><a href="...">查看用户名是否被占用</a></td>
+  <td id="tdright">用户名由<span class="sbold">a~z</span>的英文字母（不区分大小写）、<span class="sbold">0~9</span>的数字、<span class="sbold">点</span>、<span class="sbold">减号</span>或<span class="sbold">下划线</span>组成，长度为<span class="sbold">3~18个</span>字符，只能以数字或者字母开头结尾，例如：kyzy_001</td>
+</tr>
+</table>
+
+<div style="background-color:skyblue; color:blue; font-weight:bold;">请填写安全设置：<span class="snormal">（安全设置用于验证账户和找回密码）</span></div>
+
+<div class="dred" style="padding-top:5px;">以下信息对保证您账号的安全极为重要，请您务必认真填写。</div>
+
+<table>
+ <tr>
+  <td id="tdleft"><span class="sred">*</span>输入登录密码：</br><span class="sred">*</span>登录密码确认：</td>
+  <td id="tdcenter"><input type="password"></br><input type="password"></td>
+  <td id="tdright">密码长度为<span class="sbold">6~16</span>位，区分字母大小写。登录密码可以由字母、数字、特殊字符组成。【<a href="...">更多说明</a>】</td>
+</tr>
+</table>
+
+<table>
+ <tr>
+  <td id="tdleft"><span class="sred">*</span>密码提示问题：</br><span class="sred">*</span>密码提示答案：</td>
+  <td id="tdcenter"><input></br><input></td>
+  <td id="tdright">当你忘记密码时可以由此找回密码。例如，问题是“我哥哥是谁？”，答案为“peter2”。问题长度<span class="sbold">不大于36</span>个字符，一个汉字占两个字符。答案长度在<span class="sbold">6~30</span>位之间，区分大小写。【<a href="...">更多说明</a>】</td>
+</tr>
+</table>
+
+<table>
+ <tr>
+  <td id="tdleft"><span class="sred">*</span>输入安全码：</br><span class="sred">*</span>安全码确认：</td>
+  <td id="tdcenter"><input></br><input></td>
+  <td id="tdright">安全码是您找回密码的重要途径，安全码长度为<span class="sbold">6-16</span>位，区分屏幕大小写，由字母、数字、特殊字符组成。<span class="sred">特别提醒：安全码一旦设定，将不可自行修改。</span>【<a href="...">更多说明</a>】</td>
+</tr>
+</table>
+
+<div style="text-align:center;padding:6px">
+<input type="button" value="提交表单" style="width:60;">
+</div>
+
+</div>
+
+</div>
+</body>
+</html>
