@@ -1,0 +1,303 @@
+<html>
+<style>
+div{
+color:white;
+}
+div#dtotal{
+width:770px;
+height:560px;
+background-color:#11141B;
+}
+div#dleft{
+width:230px;
+height:500px;
+background-color:black;
+float:left;
+padding:15 5;
+margin-left:5px;
+margin-top:5px;
+}
+div#dright{
+width:510px;
+height:555px;
+background-color:black;
+float:right;
+margin-right:5px;
+margin-top:5px;
+}
+
+img{
+weight:60px;
+height:60px;
+border-style:solid;
+border-color:gray;
+border-width:1px;
+}
+
+span{
+color:white;
+font-size:10px;
+}
+
+table{
+//border-color:white;
+//border-style:solid;
+width:100%;
+}
+
+tr{
+text-align:center;
+}
+
+td#tdl1{
+width:1/3;
+text-align:left;
+}
+td#td2{
+width:1/7;
+text-align:center;
+}
+
+</style>
+
+<body>
+<div id="dtotal">
+
+
+<div id="dleft">
+<div style="text-align:center;font-size:90%">英雄资料</div>
+
+<div style="padding-top:20px;padding-bottom:10px"><table>
+ <tr>
+  <td id="tdl1"><input type="checkbox"><span>坦克</span></td>
+  <td id="tdl1"><input type="checkbox"><span>法师</span></td>
+  <td id="tdl1"><input type="checkbox"><span>刺客</span></td>
+ </tr>
+ <tr>
+  <td id="tdl1"><input type="checkbox"><span>辅助</span></td>
+  <td id="tdl1"><input type="checkbox"><span>新手</span></td>
+  <td id="tdl1"><input type="checkbox"><span>近战</span></td>
+ </tr>
+ <tr>
+  <td id="tdl1"><input type="checkbox"><span>远程</span></td>
+  <td id="tdl1"><input type="checkbox"><span>推进</span></td>
+  <td id="tdl1"><input type="checkbox"><span>打野</span></td>
+ </tr>
+ <tr>
+  <td id="tdl1"><input type="checkbox"><span>后期</span></td>
+  <td id="tdl1"><input type="checkbox"><span>潜行</span></td>
+  <td id="tdl1"><input type="checkbox"><span>战士</span></td>
+ </tr>
+</table></div>
+ 
+<div style="color:orange;font-size:10%;margin-left:5;margin-right:5;padding-bottom:10px;border-bottom-style:dashed;border-bottom-color:gray;border-bottom-width:1px">
+英雄价格:</div>
+
+<div style="padding-top:5px;padding-bottom:0px"><table>
+ <tr>
+  <td id="tdl1"><input type="checkbox"><span>6300</span></td>
+  <td id="tdl1"><input type="checkbox"><span>4800</span></td>
+  <td id="tdl1"><input type="checkbox"><span>3150</span></td>
+ </tr>
+ <tr>
+  <td id="tdl1"><input type="checkbox"><span>1350</span></td>
+  <td id="tdl1"><input type="checkbox"><span>450</span></td>
+ </tr>
+ </table></div>
+
+<div style="text-align:center;font-size:90%;padding:20px">物品资料</div>
+
+<div style="text-align:left"><table>
+ <tr>
+  <td id="tdl1"><input type="checkbox"><span>生命值</span></td>
+  <td id="tdl1"><input type="checkbox"><span>攻击速度</span></td>
+  <td id="tdl1"><input type="checkbox"><span>护甲穿透</span></td>
+ </tr>
+ <tr>
+  <td id="tdl1"><input type="checkbox"><span>暴击</span></td>
+  <td id="tdl1"><input type="checkbox"><span>法术穿透</span></td>
+  <td id="tdl1"><input type="checkbox"><span>魔法抗性</span></td>
+ </tr>
+ <tr>
+  <td id="tdl1"><input type="checkbox"><span>远程</span></td>
+  <td id="tdl1"><input type="checkbox"><span>推进</span></td>
+  <td id="tdl1"><input type="checkbox"><span>打野</span></td>
+ </tr>
+ <tr>
+  <td id="tdl1"><input type="checkbox"><span>韧性</span></td>
+  <td id="tdl1"><input type="checkbox"><span>法力值</span></td>
+  <td id="tdl1"><input type="checkbox"><span>生命偷取</span></td>
+ </tr>
+<tr>
+  <td id="tdl1"><input type="checkbox"><span>冷却缩减</span></td>
+  <td id="tdl1"><input type="checkbox"><span>生命回复</span></td>
+  <td id="tdl1"><input type="checkbox"><span>附魔</span></td>
+ </tr>
+<tr>
+  <td id="tdl1"><input type="checkbox"><span>法力回复</span></td>
+  <td id="tdl1"><input type="checkbox"><span>法术吸血</span></td>
+  <td id="tdl1"><input type="checkbox"><span>移动速度</span></td>
+ </tr>
+<tr>
+  <td id="tdl1"><input type="checkbox"><span>护甲值</span></td>
+   </tr>
+</table></div>
+
+<div style="text-align:center;font-size:90%;padding:20px">符文资料</div>
+
+
+</div>
+
+
+
+
+<div id="dright">
+
+<table>
+ <tr>
+  <td id="tdl2"><img src="/Users/saber/Program/TextEdit/imgs/0.jpg"></td>
+  <td id="tdl2"><img src="/Users/saber/Program/TextEdit/imgs/1.jpg"></td>
+  <td id="tdl2"><img src="/Users/saber/Program/TextEdit/imgs/2.jpg"></td>
+  <td id="tdl2"><img src="/Users/saber/Program/TextEdit/imgs/3.jpg"></td>
+  <td id="tdl2"><img src="/Users/saber/Program/TextEdit/imgs/4.jpg"></td>
+  <td id="tdl2"><img src="/Users/saber/Program/TextEdit/imgs/5.jpg"></td>
+  <td id="tdl2"><img src="/Users/saber/Program/TextEdit/imgs/6.jpg"></td>
+ </tr>
+ <tr>
+  <td id="tdl2"><span style="font-size:10%;color:orange;">沙漠死神</span></td>
+  <td id="tdl2"><span style="font-size:10%;color:orange;">冰霜女巫</span></td>
+  <td id="tdl2"><span style="font-size:10%;color:orange;">酒桶</span></td>
+  <td id="tdl2"><span style="font-size:10%;color:orange;">众星之子</span></td>
+  <td id="tdl2"><span style="font-size:10%;color:orange;">血魔</span></td>
+  <td id="tdl2"><span style="font-size:10%;color:orange;">盲僧</span></td>
+  <td id="tdl2"><span style="font-size:10%;color:orange;">狗熊</span></td>
+ </tr>
+ <tr>
+  <td id="tdl2"><span style="font-size:10%;color:orange;">内瑟斯</span></td>
+  <td id="tdl2"><span style="font-size:10%;color:orange;">丽桑卓</span></td>
+  <td id="tdl2"><span style="font-size:10%;color:orange;">古拉加斯</span></td>
+  <td id="tdl2"><span style="font-size:10%;color:orange;">星妈</span></td>
+  <td id="tdl2"><span style="font-size:10%;color:orange;">艾瑞莉克</span></td>
+  <td id="tdl2"><span style="font-size:10%;color:orange;">李青</span></td>
+  <td id="tdl2"><span style="font-size:10%;color:orange;">狗熊</span></td>
+ </tr>
+ 
+ <tr>
+  <td id="tdl2"><img src="/Users/saber/Program/TextEdit/imgs/7.jpg"></td>
+  <td id="tdl2"><img src="/Users/saber/Program/TextEdit/imgs/8.jpg"></td>
+  <td id="tdl2"><img src="/Users/saber/Program/TextEdit/imgs/9.jpg"></td>
+  <td id="tdl2"><img src="/Users/saber/Program/TextEdit/imgs/10.jpg"></td>
+  <td id="tdl2"><img src="/Users/saber/Program/TextEdit/imgs/11.jpg"></td>
+  <td id="tdl2"><img src="/Users/saber/Program/TextEdit/imgs/12.jpg"></td>
+  <td id="tdl2"><img src="/Users/saber/Program/TextEdit/imgs/13.jpg"></td>
+ </tr>
+ <tr>
+  <td id="tdl2"><span style="font-size:10%;color:orange;">沙漠死神</span></td>
+  <td id="tdl2"><span style="font-size:10%;color:orange;">冰霜女巫</span></td>
+  <td id="tdl2"><span style="font-size:10%;color:orange;">酒桶</span></td>
+  <td id="tdl2"><span style="font-size:10%;color:orange;">众星之子</span></td>
+  <td id="tdl2"><span style="font-size:10%;color:orange;">血魔</span></td>
+  <td id="tdl2"><span style="font-size:10%;color:orange;">盲僧</span></td>
+  <td id="tdl2"><span style="font-size:10%;color:orange;">狗熊</span></td>
+ </tr>
+ <tr>
+  <td id="tdl2"><span style="font-size:10%;color:orange;">内瑟斯</span></td>
+  <td id="tdl2"><span style="font-size:10%;color:orange;">丽桑卓</span></td>
+  <td id="tdl2"><span style="font-size:10%;color:orange;">古拉加斯</span></td>
+  <td id="tdl2"><span style="font-size:10%;color:orange;">星妈</span></td>
+  <td id="tdl2"><span style="font-size:10%;color:orange;">艾瑞莉克</span></td>
+  <td id="tdl2"><span style="font-size:10%;color:orange;">李青</span></td>
+  <td id="tdl2"><span style="font-size:10%;color:orange;">狗熊</span></td>
+ </tr>
+
+ <tr>
+  <td id="tdl2"><img src="/Users/saber/Program/TextEdit/imgs/14.jpg"></td>
+  <td id="tdl2"><img src="/Users/saber/Program/TextEdit/imgs/15.jpg"></td>
+  <td id="tdl2"><img src="/Users/saber/Program/TextEdit/imgs/16.jpg"></td>
+  <td id="tdl2"><img src="/Users/saber/Program/TextEdit/imgs/17.jpg"></td>
+  <td id="tdl2"><img src="/Users/saber/Program/TextEdit/imgs/18.jpg"></td>
+  <td id="tdl2"><img src="/Users/saber/Program/TextEdit/imgs/19.jpg"></td>
+  <td id="tdl2"><img src="/Users/saber/Program/TextEdit/imgs/20.jpg"></td>
+ </tr>
+ <tr>
+  <td id="tdl2"><span style="font-size:10%;color:orange;">沙漠死神</span></td>
+  <td id="tdl2"><span style="font-size:10%;color:orange;">冰霜女巫</span></td>
+  <td id="tdl2"><span style="font-size:10%;color:orange;">酒桶</span></td>
+  <td id="tdl2"><span style="font-size:10%;color:orange;">众星之子</span></td>
+  <td id="tdl2"><span style="font-size:10%;color:orange;">血魔</span></td>
+  <td id="tdl2"><span style="font-size:10%;color:orange;">盲僧</span></td>
+  <td id="tdl2"><span style="font-size:10%;color:orange;">狗熊</span></td>
+ </tr>
+ <tr>
+  <td id="tdl2"><span style="font-size:10%;color:orange;">内瑟斯</span></td>
+  <td id="tdl2"><span style="font-size:10%;color:orange;">丽桑卓</span></td>
+  <td id="tdl2"><span style="font-size:10%;color:orange;">古拉加斯</span></td>
+  <td id="tdl2"><span style="font-size:10%;color:orange;">星妈</span></td>
+  <td id="tdl2"><span style="font-size:10%;color:orange;">艾瑞莉克</span></td>
+  <td id="tdl2"><span style="font-size:10%;color:orange;">李青</span></td>
+  <td id="tdl2"><span style="font-size:10%;color:orange;">狗熊</span></td>
+ </tr>
+
+ <tr>
+  <td id="tdl2"><img src="/Users/saber/Program/TextEdit/imgs/21.jpg"></td>
+  <td id="tdl2"><img src="/Users/saber/Program/TextEdit/imgs/22.jpg"></td>
+  <td id="tdl2"><img src="/Users/saber/Program/TextEdit/imgs/23.jpg"></td>
+  <td id="tdl2"><img src="/Users/saber/Program/TextEdit/imgs/24.jpg"></td>
+  <td id="tdl2"><img src="/Users/saber/Program/TextEdit/imgs/25.jpg"></td>
+  <td id="tdl2"><img src="/Users/saber/Program/TextEdit/imgs/26.jpg"></td>
+  <td id="tdl2"><img src="/Users/saber/Program/TextEdit/imgs/27.jpg"></td>
+ </tr>
+ <tr>
+  <td id="tdl2"><span style="font-size:10%;color:orange;">沙漠死神</span></td>
+  <td id="tdl2"><span style="font-size:10%;color:orange;">冰霜女巫</span></td>
+  <td id="tdl2"><span style="font-size:10%;color:orange;">酒桶</span></td>
+  <td id="tdl2"><span style="font-size:10%;color:orange;">众星之子</span></td>
+  <td id="tdl2"><span style="font-size:10%;color:orange;">血魔</span></td>
+  <td id="tdl2"><span style="font-size:10%;color:orange;">盲僧</span></td>
+  <td id="tdl2"><span style="font-size:10%;color:orange;">狗熊</span></td>
+ </tr>
+ <tr>
+  <td id="tdl2"><span style="font-size:10%;color:orange;">内瑟斯</span></td>
+  <td id="tdl2"><span style="font-size:10%;color:orange;">丽桑卓</span></td>
+  <td id="tdl2"><span style="font-size:10%;color:orange;">古拉加斯</span></td>
+  <td id="tdl2"><span style="font-size:10%;color:orange;">星妈</span></td>
+  <td id="tdl2"><span style="font-size:10%;color:orange;">艾瑞莉克</span></td>
+  <td id="tdl2"><span style="font-size:10%;color:orange;">李青</span></td>
+  <td id="tdl2"><span style="font-size:10%;color:orange;">狗熊</span></td>
+ </tr>
+
+ <tr>
+  <td id="tdl2"><img src="/Users/saber/Program/TextEdit/imgs/28.jpg"></td>
+  <td id="tdl2"><img src="/Users/saber/Program/TextEdit/imgs/29.jpg"></td>
+  <td id="tdl2"><img src="/Users/saber/Program/TextEdit/imgs/30.jpg"></td>
+  <td id="tdl2"><img src="/Users/saber/Program/TextEdit/imgs/31.jpg"></td>
+  <td id="tdl2"><img src="/Users/saber/Program/TextEdit/imgs/32.jpg"></td>
+  <td id="tdl2"><img src="/Users/saber/Program/TextEdit/imgs/33.jpg"></td>
+  <td id="tdl2"><img src="/Users/saber/Program/TextEdit/imgs/34.jpg"></td>
+ </tr>
+ <tr>
+  <td id="tdl2"><span style="font-size:10%;color:orange;">沙漠死神</span></td>
+  <td id="tdl2"><span style="font-size:10%;color:orange;">冰霜女巫</span></td>
+  <td id="tdl2"><span style="font-size:10%;color:orange;">酒桶</span></td>
+  <td id="tdl2"><span style="font-size:10%;color:orange;">众星之子</span></td>
+  <td id="tdl2"><span style="font-size:10%;color:orange;">血魔</span></td>
+  <td id="tdl2"><span style="font-size:10%;color:orange;">盲僧</span></td>
+  <td id="tdl2"><span style="font-size:10%;color:orange;">狗熊</span></td>
+ </tr>
+ <tr>
+  <td id="tdl2"><span style="font-size:10%;color:orange;">内瑟斯</span></td>
+  <td id="tdl2"><span style="font-size:10%;color:orange;">丽桑卓</span></td>
+  <td id="tdl2"><span style="font-size:10%;color:orange;">古拉加斯</span></td>
+  <td id="tdl2"><span style="font-size:10%;color:orange;">星妈</span></td>
+  <td id="tdl2"><span style="font-size:10%;color:orange;">艾瑞莉克</span></td>
+  <td id="tdl2"><span style="font-size:10%;color:orange;">李青</span></td>
+  <td id="tdl2"><span style="font-size:10%;color:orange;">狗熊</span></td>
+ </tr>
+</table>
+
+</div>
+
+
+</div>
+</body>
+</html>
