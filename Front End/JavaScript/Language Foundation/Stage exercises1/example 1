@@ -1,0 +1,23 @@
+<html>
+<meta charset="UTF-8">
+
+<head>
+<style>
+input{
+width:80px;
+}
+</style>
+
+<script>
+function sum(){
+var x=document.getElementById("num1").value;
+var y=document.getElementById("num2").value;
+document.getElementById("result").value=(parseInt(x)+parseInt(y)).toString();
+}
+</script>
+</head>
+
+<body>
+<input type="text" id="num1"> + <input type="text" id="num2"> = <input type="text" id="result" value=""> <input type="button" value="运算" onclick="sum()">
+</body>
+</html>
