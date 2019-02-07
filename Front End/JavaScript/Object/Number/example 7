@@ -1,0 +1,28 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+</head>
+
+<style>
+input{
+ type:text;
+}
+</style>
+
+<script>
+function multiply(){
+ var num1 = parseFloat(getId("num1"));
+ var num2 = parseFloat(getId("num2"));
+ document.getElementById("result").value=(num1*num2).toExponential();
+}
+
+function getId(id){
+ var value = document.getElementById(id).value;
+ return value;
+}
+</script>
+
+<body>
+<input id="num1" value="5"> * <input id="num2" value="6"> = <input id="result" value="3e1"> <button onclick="multiply()">运算</button> 
+</body>
+</html>
