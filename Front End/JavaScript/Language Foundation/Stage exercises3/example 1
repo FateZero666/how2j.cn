@@ -1,0 +1,123 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+</head>
+
+<style>
+button{
+width:220px;
+}
+
+input{
+width:90%;
+}
+
+table{
+ border-collapse:collapse;
+}
+
+td.left{
+border:1px solid silver;
+width:150px;
+
+}
+td.center{
+border:1px solid lightgray;
+width:406px;
+text-align:center;
+}
+td.right{
+border:1px solid lightgray;
+width:250px;
+text-align:center;
+float:right;
+}
+</style>
+
+<script>
+function get(){
+ var startPrincipal=parseFloat($("startPrincipal"));
+ var ratio=parseFloat($("ratio"));
+ var year=parseInt($("year"));
+ var addPrincipal=parseFloat($("addPrincipal"));
+ 
+ var totalPrincipal=0;
+ if(year > 0){
+  totalPrincipal=startPrincipal + (year - 1) * addPrincipal;
+ }else if(year == 0){
+  totalPrincipal=startPrincipal;
+ }else{
+   alert("year必须大于等于零");
+   return 0;
+ }
+ 
+ var totalInterest=0;
+ var totalMoney=startPrincipal;
+ 
+ var i=0;
+ if(year > 0){
+ do{
+    totalMoney=totalMoney * (1 + (ratio / 100.0)) + addPrincipal;
+    i++;
+ }while(i < year - 1);
+ totalMoney -= addPrincipal;
+ }else if(year == 0){
+   totalMoney=startPrincipal;
+ }
+ totalInterest=totalMoney-totalPrincipal;
+ 
+ document.getElementById("totalPrincipal").value=totalPrincipal; 
+ document.getElementById("totalInterest").value=totalInterest; 
+ document.getElementById("totalMoney").value=totalMoney; 
+}
+
+function $(id){
+  var value=document.getElementById(id).value;
+  return value;
+}
+</script>
+
+<body>
+<table>
+ <tr>
+  <td class="left">起始资金</td>
+  <td class="right"><input id="startPrincipal" value="10000"> ￥</td>
+ </tr>
+ <tr>
+ <tr>
+  <td class="left">每年收益</td>
+  <td class="right"><input id="ratio" value="5"> %</td>
+ </tr>
+ <tr>
+  <td class="left">复利年数</td>
+  <td class="right"><input id="year" value="10"> 年</td>
+ </tr>
+ <tr>
+  <td class="left">每年追加资金</td>
+  <td class="right"><input id="addPrincipal" value="10000"> ￥</td>
+ </tr>
+</table>
+
+<table>
+ <tr>
+  <td class="center"><button onclick="get()">计算</button></td>
+ </tr>
+</table>
+
+<table>
+ <tr>
+  <td class="left">本金和</td>
+  <td class="right"><input id="totalPrincipal" value="0"> ￥</td>
+ </tr>
+ <tr>
+ <tr>
+  <td class="left">利息和</td>
+  <td class="right"><input id="totalInterest" value="0"> ￥</td>
+ </tr>
+ <tr>
+  <td class="left">本息和</td>
+  <td class="right"><input id="totalMoney" value="0"> ￥</td>
+ </tr>
+</table>
+</body>
+</html>
