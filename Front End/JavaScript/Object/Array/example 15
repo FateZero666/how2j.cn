@@ -1,0 +1,76 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+</head>
+
+<style>
+div.dbutton{
+text-align:center;
+width:100%;
+margin:10;
+}
+</style>
+
+<script>
+
+
+function letterSort(){
+ var randomString = document.getElementById("randomString").value;
+ var regS=new RegExp(" ","g");
+ randomString.replace(regS, "");
+ var tempS=randomString.split("");
+ tempS.sort();
+ setId("positiveSequence", composeString(tempS).replace(regS, ""));
+ tempS.reverse();
+ setId("reverseOrder", composeString(tempS).replace(regS, ""));
+}
+function wordSort(){
+ var randomString = document.getElementById("randomString").value;
+ var tempS=randomString;
+ var tempA=tempS.split(" ");
+ tempA.sort();
+ setId("positiveSequence", composeString(tempA));
+ setId("reverseOrder", composeString(tempA.reverse()));
+}
+
+function composeString(stringArray){
+ var result="";
+ var size=stringArray.length;
+ for(var i = 0; i < size; ++i){
+     if(i < size - 1){
+	result += stringArray[i] + " ";
+     } else {
+        result += stringArray[i];
+     }
+ }
+ return result;
+}
+function setId(id, value){
+ document.getElementById(id).value=value;
+}
+</script>
+
+<body>
+<div style="width:320px; height:300px; margin:10 auto">
+<table>
+ <tr>
+  <td>随机输入英文字符串：</td>
+  <td><textarea id="randomString">winter is coming</textarea></td>
+ </tr>
+ <tr>
+  <td>正排序结果：</td>
+  <td><textarea id="positiveSequence"></textarea></td>
+ </tr>
+ <tr>
+  <td>倒排序结果：</td>
+  <td><textarea id="reverseOrder"></textarea></td>
+ </tr>
+</table>
+
+<div class="dbutton"><button onclick="letterSort()">按照字母排序</button></div>
+
+<div class="dbutton"><button onclick="wordSort()">按照单词排序</button></div>
+
+</div> 
+</body>
+</html>
