@@ -1,0 +1,25 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+</head>
+
+<style>
+</style>
+
+<script>
+function judge(){
+ var s=(document.getElementById("input").value);
+ if(s.charAt(0).localeCompare("A") == 0){
+     	alert("登陆成功");
+ }else if(s.charAt(0).localeCompare("a")== 0){
+   	alert("登陆成功"); 
+ }else{
+ 	alert("账户不存在");
+ }
+}
+</script>
+
+<body>
+<input type="text" id="input"> <button onclick="judge()"> 验证</button>
+</body>
+</html>
