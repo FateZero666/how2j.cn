@@ -1,0 +1,26 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+</head>
+
+<style>
+</style>
+
+<script>
+function way1(){
+ var i1=document.getElementById("i1");
+ var as=i1.attributes;
+ as["src"].nodeValue="/Users/saber/Program/TextEdit/gareen.jpg";
+}
+function way2(){
+ var i1=document.getElementById("i1");
+ i1.src="/Users/saber/Program/TextEdit/katarina.jpg";
+}
+</script>
+
+<body>
+<button onclick="way1()">通过src属性切换图片1</button><br>
+<button onclick="way2()">通过属性节点切换图片2</button><br>
+<img id="i1" src="/Users/saber/Program/TextEdit/katarina.jpg">
+</body>
+</html>
