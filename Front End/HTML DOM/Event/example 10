@@ -1,0 +1,88 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+</head>
+
+<style>
+div#boxLeft{
+line-height:2;
+border:1px lightgray solid;
+width:65;
+margin-top:5;
+display:none;
+position:absolute; 
+top:32px
+}
+div#boxCenter{
+line-height:2;
+border:1px lightgray solid;
+width:65;
+margin-top:5;
+display:none;
+position:absolute; 
+left:60px; 
+top:32px
+}
+div#boxRight{
+line-height:2;
+border:1px lightgray solid;
+width:65;
+margin-top:5;
+display:none;
+position:absolute; 
+left:100px; 
+top:32px;
+}
+a{
+color:lightgray;
+text-decoration:none;
+display:block;
+}
+a:hover{
+background-color:#f1f1f1;
+}
+
+span#head{
+color:skyblue;
+}
+</style>
+
+<script>
+function over(id){
+  document.getElementById("boxLeft").style.display="none";
+  document.getElementById("boxCenter").style.display="none";
+  document.getElementById("boxRight").style.display="none";
+  document.getElementById(id).style.display="block";
+}
+</script>
+
+<body>
+<div style="width:400; height:300; margin:10;">
+<span id="head" onmouseover="over('boxLeft')">武器</span>
+<span id="head" onmouseover="over('boxCenter')">护甲</span>
+<span id="head" onmouseover="over('boxRight')">英雄</span><br>
+
+<div id="boxLeft">
+<a href="#nowhere"> 大剑 </a>
+<a href="#nowhere"> 屠龙 </a>
+<a href="#nowhere"> 倚天 </a>
+<a href="#nowhere"> 七孔砖 </a>
+</div>
+ 
+<div id="boxCenter">
+<a href="#nowhere"> 胸甲 </a>
+<a href="#nowhere"> 护腕 </a>
+<a href="#nowhere"> 头盔 </a>
+<a href="#nowhere"> 鞋子 </a>
+</div>
+ 
+<div id="boxRight">
+<a href="#nowhere"> 盖伦 </a>
+<a href="#nowhere"> 提莫 </a>
+<a href="#nowhere"> 安妮 </a>
+<a href="#nowhere"> 死哥 </a>
+</div>
+
+</div>
+</body>
+</html>
