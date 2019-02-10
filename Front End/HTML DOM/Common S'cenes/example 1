@@ -1,0 +1,63 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+</head>
+
+<style>
+a:link {color: black}
+a:visited {color: #00FF00}
+a:hover {color: #FF00FF}
+a:active {color: #0000FF}
+
+
+table{
+border-collapse:collapse;
+}
+
+td{
+border:1px solid black;
+width:200;
+}
+</style>
+
+<script>
+function remove(link){
+ var b = confirm("确认删除?")
+ if(!b)
+   return;
+ var table=document.getElementById("parent");
+ var td=link.parentNode;
+ var tr=td.parentNode;
+ var index=tr.rowIndex;
+ table.deleteRow(index);
+}
+</script>
+
+<body>
+
+<div>
+<table id="parent">
+ <tr>
+  <td>英雄名称</td>
+  <td>操作</td>
+ </tr>
+ <tr value="0">
+  <td>盖伦</td>
+  <td value="1"><a href="###" onclick="remove(this)" value="222">删除</a></td>
+ </tr>
+ <tr>
+  <td>提姆</td>
+  <td><a href="###" onclick="remove(this)">删除</a></td>
+ </tr>
+ <tr>
+  <td>祈求者</td>
+  <td><a href="###" onclick="remove(this)">删除</a></td>
+ </tr> 
+</table>
+</div>
+
+<script>
+</script>
+
+</body>
+</html>
