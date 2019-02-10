@@ -1,0 +1,34 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+</head>
+
+<style>
+
+</style>
+
+<script>
+function show(){
+ var script = document.createElement("script");
+ 
+ var src = document.createAttribute("src");
+ src.nodeValue="/Users/saber/Program/TextEdit/test3041.js";
+ script.setAttributeNode(src);
+ 
+ var d = document.getElementById("d");
+ var b = document.getElementById("b");
+ d.insertBefore(script, b);
+}
+</script>
+
+<body>
+
+<div id="d">
+<button id="b" onclick="show()">show</button>
+</div>
+
+<script>
+</script>
+
+</body>
+</html>
