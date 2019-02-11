@@ -1,0 +1,55 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+</head>
+
+<style>
+</style>
+
+<script>
+function register(){
+ var account=getNode("account");
+ var age=getNode("age");
+ if(account.value.length < 3) {
+   alert("用户名不小于3");
+   return false;
+ }
+ if(age.value.length == 0) {
+   alert("年龄不能为空");
+   return false;
+ }
+ if(isNaN(age.value)) {
+   alert("年龄必须是数字");
+   return false;
+ }
+ var email = document.getElementById("email");
+        
+  if(0==email.value.length){
+     alert("email不能为空");
+    return false;
+  }
+     
+  var Regex = /^(?:\w+\.?)*\w+@(?:\w+\.)*\w+$/;      
+     
+  if (!Regex.test(email.value)){               
+       alert("email格式不正确");
+       return false;
+  }           
+ return true;
+}
+function getNode(id){
+ return document.getElementById(id);
+}
+</script>
+
+<body>
+
+<form method="post" action="/Users/saber/Program/TextEdit/text.html" onsubmit="return register()">
+账号：<input id="account" type="text"><br><br>
+年龄：<input id="age" type="text"><br><br>
+EMail：<input id="email" type="text"><br><br>
+<input type="submit" value="注册">
+</form>
+
+</body>
+</html>
