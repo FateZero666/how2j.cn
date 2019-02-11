@@ -1,0 +1,32 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+</head>
+
+<style>
+</style>
+
+<script>
+function hide() {
+ getNode("test").style.display="none";
+}
+function show() {
+ getNode("test").style.display="block";
+}
+
+function getNode(id){
+ return document.getElementById(id);
+}
+</script>
+
+<body>
+
+<button onclick="hide()">隐藏div</button> <button onclick="show()">显示div</button>
+<br>
+<br>
+<div id="test">
+这是一个div
+</div>
+
+</body>
+</html>
