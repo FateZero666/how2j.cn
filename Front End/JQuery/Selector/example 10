@@ -1,0 +1,89 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<script src="http://how2j.cn/study/jquery.min.js"></script>
+</head>
+
+
+<style>
+table{
+border-collapse:collapse;
+table-layout:fixed;
+width:80%;
+}
+
+td{
+width:25%
+height:30px;
+border-bottom-style:solid;
+border-bottom-color:lightgray;
+border-bottom-width:1;
+}
+</style>
+
+
+<script>
+$(function(){
+  $(".b").click(function(){
+     var value = $(this).val();
+     $("td[rowspan!=13] " + value).toggle(500);
+  });
+  $(".b1").click(function(){
+     var value = $(this).val();
+     var options = $("td[rowspan!=13] " + value);
+     alert("选中了"+options.length+"条记录!");
+  });
+});
+</script>
+
+<table>
+ <tr>
+  <td rowspan="13" style="vertical-align:top;">
+   <button class="b" value=":enabled">切换：enabled</button><br>
+   <button class="b" value=":disabled">切换：disabled</button><br>
+   <button class="b" value=":checked">切换：checked</button><br>
+   <button class="b1" value=":selected">：selected数量</button><br>
+  </td>
+  <td>说明</td>
+  <td>表单对象属性</td>
+  <td>示例</td>
+ </tr>
+ 
+ <tr>
+  <td>enabled按钮</td>
+  <td>:enabled</td>
+  <td><input type="button" value="enabled按钮" enabled="enabled" /></td>
+ </tr>
+
+ <tr>
+  <td>disabled按钮</td>
+  <td>:disabled</td>
+  <td><input type="button" value="disabled按钮" disabled="disabled" /></td>
+ </tr>
+
+ <tr>
+  <td>选中的复选框</td>
+  <td>:checked</td>
+  <td>   
+   <input type="radio" checked="checked"><br>
+   <input type="radio"><br>
+   <input type="checkbox"><br>
+   <input type="checkbox" checked="checked"><br>
+  </td>
+ </tr>
+
+ <tr>
+  <td>选中的下拉列表</td>
+  <td>:selected</td>
+  <td>
+   <select size="3" multiple="multiple">
+    <option selected="selected">苍老师</option>
+    <option>高树玛利亚</option>
+    <option  selected="selected">幺妹</option>
+   </select>   
+  </td>
+ </tr>
+
+</table>
+
+</html>
