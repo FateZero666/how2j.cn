@@ -1,0 +1,126 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<script src="http://how2j.cn/study/jquery.min.js"></script>
+</head>
+
+
+<style>
+table{
+border-collapse:collapse;
+table-layout:fixed;
+width:80%;
+}
+
+td{
+width:25%
+height:30px;
+border-bottom-style:solid;
+border-bottom-color:lightgray;
+border-bottom-width:1;
+}
+</style>
+
+
+<script>
+$(function(){
+  $(".b").click(function(){
+     var value = $(this).val();
+     $("td[rowspan!=13] " + value).toggle(500);
+  });
+});
+</script>
+
+<table>
+ <tr>
+  <td rowspan="13" style="vertical-align:top;">
+   <button class="b" value=":input">切换所有的：input</button><br>
+   <button class="b" value=":button">切换：button</button><br>
+   <button class="b" value=":radio">切换：radio</button><br>
+   <button class="b" value=":checkbox">切换：checkbox</button><br>
+   <button class="b" value=":text">切换：text</button><br>
+   <button class="b" value=":password">切换：password</button><br>
+   <button class="b" value=":file">切换：file</button><br>
+   <button class="b" value=":submit">切换：submit</button><br>
+   <button class="b" value=":image">切换：image</button><br>
+   <button class="b" value=":reset">切换：reset</button>
+  </td>
+  <td>说明</td>
+  <td>表单对象</td>
+  <td>示例</td>
+ </tr>
+ 
+ <tr>
+  <td>input按钮</td>
+  <td>:button</td>
+  <td><input type="button" value="input按钮"></td>
+ </tr>
+
+ <tr>
+  <td>button按钮</td>
+  <td>:button</td>
+  <td><button>Button按钮</button></td>
+ </tr>
+
+ <tr>
+  <td>单选框</td>
+  <td>:radio</td>
+  <td><input type="radio"></td>
+ </tr>
+
+ <tr>
+  <td>复选框</td>
+  <td>:checkbox</td>
+  <td><input type="checkbox"></td>
+ </tr>
+
+ <tr>
+  <td>文本框</td>
+  <td>:text</td>
+  <td><input type="text" /></td>
+ </tr>
+
+ <tr>
+  <td>文本域</td>
+  <td>:textarea</td>
+  <td><textarea></textarea></td>
+ </tr>
+
+ <tr>
+  <td>密码框</td>
+  <td>:password</td>
+  <td><input type="password" /></td>
+ </tr>
+
+ <tr>
+  <td>下拉框</td>
+  <td>:select</td>
+  <td><select><option>Option1</option><option>option2</option></select></td>
+ </tr>
+
+ <tr>
+  <td>文件上传</td>
+  <td>:file</td>
+  <td><input type="file" /></td>
+ </tr>
+
+ <tr>
+  <td>提交按钮</td>
+  <td>:submit</td>
+  <td><input type="submit" /></td>
+ </tr>
+
+ <tr>
+  <td>图片型提交按钮</td>
+  <td>:image</td>
+  <td><input type="image" src="http://how2j.cn/example.gif" /></td>
+ </tr>
+
+ <tr>
+  <td>重置按钮</td>
+  <td>:reset</td>
+  <td><input type="reset" /></td>
+ </tr>
+</table>
+
+</html>
